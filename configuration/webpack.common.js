@@ -1,9 +1,26 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = (kanopiPackConfig) => {
   return {
+    resolveLoader: {
+      modules: [
+        kanopiPackConfig.resolver.toKanopiPack('node_modules'),
+        kanopiPackConfig.resolver.toCallingPackage('node_modules')
+      ],
+      symlinks: true
+    },
+    resolve: {
+      modules: [
+        kanopiPackConfig.resolver.toKanopiPack('node_modules'),
+        kanopiPackConfig.resolver.toCallingPackage('node_modules')
+      ],
+      alias: {
+        '@': kanopiPackConfig.paths.source
+      }
+    },
     entry: kanopiPackConfig.filePatterns.entryPoints,
     externals: {
       jquery: 'jQuery'
@@ -27,6 +44,7 @@ module.exports = (kanopiPackConfig) => {
     },
     plugins: [
       new StyleLintPlugin({
+        configBasedir: kanopiPackConfig.resolver.toKanopiPack(''),
         configFile: kanopiPackConfig.styles.stylelintConfigPath,
         fix: kanopiPackConfig.styles.stylelintAutoFix
       }),
@@ -45,12 +63,6 @@ module.exports = (kanopiPackConfig) => {
         hashDigest: 'hex',
         hashDigestLength: 8
       })
-    ],
-    resolve: {
-      extensions: ['.ts', '.js', '.json'],
-      alias: {
-        '@': kanopiPackConfig.paths.source
-      }
-    }
+    ]
   }
 };

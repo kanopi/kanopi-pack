@@ -29,11 +29,21 @@ module.exports = merge.smart(
       headers: {
         'Access-Control-Allow-Origin': '*'
       },
+      historyApiFallback: {
+        disableDotRule: true,
+        htmlAcceptHeaders: [
+          'text/html',
+          'application/xhtml+xml'
+        ]
+      },
+      host: '0.0.0.0',
       hotOnly: true,
       historyApiFallback: true,
       inline: true,
+      overlay: { warnings: false, errors: true },
       port: kanopiPackConfig.devServer.port,
       publicPath: kanopiPackConfig.devServer.host,
+      quiet: true
     },
     module: {
       rules: [
@@ -43,7 +53,7 @@ module.exports = merge.smart(
           test: /\.(scss|sass)$/,
           use: [
             'style-loader',
-            ...ScssLoaders(kanopiPackConfig,`$asset_root: '${kanopiPackConfig.devServer.host}';`)
+            ...ScssLoaders(kanopiPackConfig, `$asset_root: '${kanopiPackConfig.devServer.host}';`)
           ]
         }
       ]
@@ -51,7 +61,7 @@ module.exports = merge.smart(
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new AssetsPlugin({
-        fileTypes: [ 'js', 'css' ],
+        fileTypes: ['js', 'css'],
         keepInMemory: true,
         includeAllFileTypes: false,
         includeManifest: 'manifest',

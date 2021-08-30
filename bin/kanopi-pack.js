@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 
 const program = require('commander');
+const package = require('../package.json');
 
 program
-  .version('1.0.0')
-  .option('-m, --mode', 'Webpack Mode')
-  .parse(process.argv);
+  .version(`kanopi-pack ${package.version}`)
+  .usage('<command> [options]');
 
 program
   .command('production')
   .description('Runs Webpack for production builds.')
   .allowUnknownOption()
   .action(() => {
-    require('../runScript')('production', process.argv.slice(3))
+    let arguments = ['--mode',,...process.argv.slice(2)]
+    require('../runScript')('production', arguments)
   });
 
 program
@@ -20,7 +21,7 @@ program
   .description('Runs Webpack Dev Server for local development.')
   .allowUnknownOption()
   .action(() => {
-    require('../runScript')('development', process.argv.slice(3))
+    require('../runDevServer')('development', process.argv.slice(3))
   })
 
   program.parse(process.argv);

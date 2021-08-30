@@ -14,11 +14,11 @@ module.exports = (kanopiPackConfig) => {
     }
 
 
-    return JavascriptRules(has_source_maps).concat([
+    return JavascriptRules(kanopiPackConfig).concat([
         {
             test: /\.tsx?$/,
             exclude: /node_modules/,
-            use: BabelLoader(has_source_maps)
+            use: BabelLoader(kanopiPackConfig)
                 .concat([
                     {
                         loader: 'ts-loader',
