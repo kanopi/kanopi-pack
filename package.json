@@ -1,5 +1,5 @@
 {
-  "name": "kanopi-pack",
+  "name": "@kanopi/pack",
   "version": "1.0.0",
   "description": "Pre-packaged Webpack 4 configuration with extendable configuration to coordinate loaders and rules for common web stacks",
   "main": "index.js",
@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/kanopi/kanopi-pack#readme",
   "engines": {
-    "node": ">=14 <16",
-    "npm": ">6.14"
+    "node": ">=12 <16",
+    "npm": ">=6.14"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",

@@ -42,8 +42,7 @@ module.exports = merge.smart(
       inline: true,
       overlay: { warnings: false, errors: true },
       port: kanopiPackConfig.devServer.port,
-      publicPath: kanopiPackConfig.devServer.host,
-      quiet: true
+      publicPath: kanopiPackConfig.devServer.host
     },
     module: {
       rules: [
