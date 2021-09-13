@@ -4,8 +4,6 @@
   "description": "Pre-packaged Webpack 4 configuration with extendable configuration to coordinate loaders and rules for common web stacks",
   "main": "index.js",
   "scripts": {
-    "tests": "webpack-dev-server --mode development --config ./configuration/webpack.development.js",
-    "production": "webpack --mode production --config ./configuration/webpack.production.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -42,7 +40,6 @@
     "core-js": "^3.16.2",
     "css-hot-loader": "^1.4.4",
     "css-loader": "^5.2.7",
-    "execa": "^5.1.1",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^1.6.2",
     "optimize-css-assets-webpack-plugin": "^5.0.8",

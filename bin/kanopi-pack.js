@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 
+const chalk = require('chalk');
 const program = require('../commands/index');
 
 program
-    .command('production')
-    .description('Runs Webpack for production builds.')
-    .allowUnknownOption()
-    .action(() => {
-        let arguments = ['--mode', , ...process.argv.slice(2)]
-        require('../runScript')('production', arguments)
-    });
+    .command('standard')
+    .description('Run Webpack builds, set environment to develoment for HMR')
+    .argument('[environment]', 'Choose production (default) or development')
+    .action((environment) => {
+        const isDevelopment = 'development' === environment;
 
-program
-    .command('development')
-    .description('Runs Webpack Dev Server for local development.')
-    .allowUnknownOption()
-    .action(() => {
-        require('../runDevServer')('development', process.argv.slice(3))
+        console.log(chalk.greenBright('Package:\tKanopi Pack Standard'))
+        console.log(chalk.yellow('Environment:\t' + (isDevelopment ? 'Development' : 'Production')));
+        console.log('');
+
+        isDevelopment 
+            ? require('../runDevServer')(require('../configuration/webpack.development'))
+            : require('../runWebpack')(require('../configuration/webpack.production'));
     });
 
 program.parse(process.argv);

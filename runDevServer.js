@@ -1,9 +1,8 @@
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
-module.exports = async (task, additonalArgs) => {
+module.exports = async (config) => {
     try {
-        const config = require('./configuration/webpack.development');
         const compiler = webpack(config);
         const server = new WebpackDevServer(compiler, config.devServer);
 
@@ -19,7 +18,7 @@ module.exports = async (task, additonalArgs) => {
             let isFirstCompile = true;
 
             compiler.hooks.done.tap(
-                'kanopi-pack development',
+                'kanopi-pack standard development',
                 (stats) => {
                     if (stats.hasErrors()) {
                         return;
