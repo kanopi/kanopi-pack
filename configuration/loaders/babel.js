@@ -5,7 +5,7 @@ module.exports = (kanopiPackConfig) => {
             options: {
                 presets: [
                     [
-                        kanopiPackConfig.resolver.toKanopiPack('node_modules/@babel/preset-env'),
+                        '@babel/preset-env',
                         {
                             targets: {
                                 esmodules: true
