@@ -28,7 +28,7 @@
     "node": ">=12 <16",
     "npm": ">=6.14"
   },
-  "devDependencies": {
+  "dependencies": {
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "assets-webpack-plugin": "^5.1.2",
