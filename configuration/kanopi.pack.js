@@ -38,7 +38,11 @@ module.exports = {
     devServer: {
         allowedHosts: dev_server_allowed_hosts,
         host: `http://${dev_url}/${relative_distribution_path}/`,
-        port: dev_server_port
+        port: dev_server_port,
+        watchOptions: {
+            aggregateTimeout: package_variables?.kanopiPackConfig?.watchOptions?.aggregateTimeout ?? 600,
+            poll: package_variables?.kanopiPackConfig?.watchOptions?.poll ?? 1000
+        }
     },
     filePatterns: {
         cssOutputPattern: package_variables?.kanopiPackConfig?.filePatterns?.jsOutputPath ?? 'css/[name].css',

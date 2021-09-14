@@ -42,7 +42,11 @@ module.exports = merge.smart(
       inline: true,
       overlay: { warnings: false, errors: true },
       port: kanopiPackConfig.devServer.port,
-      publicPath: kanopiPackConfig.devServer.host
+      publicPath: kanopiPackConfig.devServer.host,
+      watchOptions: {
+        aggregateTimeout: kanopiPackConfig.devServer.watchOptions.aggregateTimeout,
+        poll: kanopiPackConfig.devServer.watchOptions.poll
+      }
     },
     module: {
       rules: [
