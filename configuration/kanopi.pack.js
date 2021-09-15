@@ -14,6 +14,8 @@ const pathResolver = {
     }
 };
 
+const hostBuilder = (host, port) => 80 !== port ? `${host}:${port}` : `${host}`;
+
 let package_variables = require(pathResolver.toCallingPackage('package.json'));
 let assets_relative_to_root = package_variables?.kanopiPackConfig?.paths?.assetsRelativeToRoot ?? 'assets';
 let assets = pathResolver.toCallingPackage(assets_relative_to_root);
@@ -33,12 +35,17 @@ let dev_server_port = parseInt(package_variables?.kanopiPackConfig?.devServer?.p
 let dev_server_sock_host = package_variables?.kanopiPackConfig?.devServer?.sockHost ?? '';;
 let dev_server_sock_port = parseInt(package_variables?.kanopiPackConfig?.devServer?.sockPort ?? 80);
 let dev_server_use_proxy = package_variables?.kanopiPackConfig?.devServer?.useProxy ?? false;
-let dev_server_public_path, dev_server_url;
+let dev_server_local_url = hostBuilder(dev_server_host, dev_server_port);
+let dev_server_url = dev_server_use_proxy ? hostBuilder(dev_server_sock_host, dev_server_sock_port) : dev_server_local_url;
+let dev_server_local_path = `http://${dev_server_local_url}/${relative_distribution_path}/`;
+let dev_server_public_path = `http://${dev_server_url}/${relative_distribution_path}/`;
+
 let dev_server_configuration = {
     allowedHosts: dev_server_allowed_hosts,
     contentBase: distribution_path,
     host: dev_server_host,
     port: dev_server_port,
+    publicPath: dev_server_public_path,
     watchOptions: {
         aggregateTimeout: parseInt(package_variables?.kanopiPackConfig?.devServer?.watchOptions?.aggregateTimeout ?? 600),
         poll: package_variables?.kanopiPackConfig?.devServer?.poll ?? false
@@ -48,22 +55,11 @@ let dev_server_configuration = {
 let typescript_filetype_patterns = package_variables?.kanopiPackConfig?.scripts?.additionalTypescriptFileTypes ?? [];
 
 if (dev_server_use_proxy) {
-    dev_server_url =  80 !== dev_server_sock_port ? `${dev_server_sock_host}:${dev_server_sock_port}` : `${dev_server_sock_host}`;
-    dev_server_public_path = `http://${dev_server_url}/${relative_distribution_path}`;
     dev_server_configuration = {
         ...dev_server_configuration,
-        publicPath: dev_server_public_path,
         sockHost: dev_server_sock_host,
         sockPort: dev_server_sock_port
     }
-}
-else {
-    dev_server_url = 80 !== dev_server_port ? `${dev_server_host}:${dev_server_port}` : `${dev_server_host}`;
-    dev_server_public_path = `http://${dev_server_url}/${relative_distribution_path}`;
-    dev_server_configuration = {
-        ...dev_server_configuration,
-        publicPath: dev_server_url,
-    };
 }
 
 typescript_filetype_patterns.concat([/\.vue$/])
@@ -81,13 +77,11 @@ module.exports = {
     paths: {
         assets: assets,
         assetsRelativeToRoot: assets_relative_to_root,
-        dev_url: dev_server_url,
+        devServerLocal: dev_server_local_path,
+        devServerPublic: dev_server_public_path,
         distribution: distribution_path,
         node: pathResolver.toCallingPackage('node_modules'),
         source: source_path
-    },
-    output: {
-        publicPath: dev_server_public_path
     },
     resolver: pathResolver,
     scripts: {

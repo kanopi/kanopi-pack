@@ -19,7 +19,7 @@ module.exports = merge.smart(
   common(kanopiPackConfig),
   {
     output: {
-      publicPath: kanopiPackConfig.output.publicPath
+      publicPath: kanopiPackConfig.paths.devServerPublic
     },
     mode: 'development',
     devtool: 'inline-source-map',
