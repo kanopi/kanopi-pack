@@ -29,7 +29,7 @@ module.exports = async (config) => {
 
                         resolve({
                             server,
-                            url: config.paths.dev_url
+                            url: config.devServer.publicPath
                         });
                     }
                 });

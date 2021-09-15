@@ -19,13 +19,12 @@ module.exports = merge.smart(
   common(kanopiPackConfig),
   {
     output: {
-      publicPath: kanopiPackConfig.devServer.host
+      publicPath: kanopiPackConfig.output.publicPath
     },
     mode: 'development',
     devtool: 'inline-source-map',
     devServer: {
-      allowedHosts: kanopiPackConfig.devServer.allowedHosts,
-      contentBase: kanopiPackConfig.paths.distribution,
+      ...kanopiPackConfig.devServer,
       headers: {
         'Access-Control-Allow-Origin': '*'
       },
@@ -36,17 +35,9 @@ module.exports = merge.smart(
           'application/xhtml+xml'
         ]
       },
-      host: '0.0.0.0',
       hotOnly: true,
-      historyApiFallback: true,
       inline: true,
-      overlay: { warnings: false, errors: true },
-      port: kanopiPackConfig.devServer.port,
-      publicPath: kanopiPackConfig.devServer.host,
-      watchOptions: {
-        aggregateTimeout: kanopiPackConfig.devServer.watchOptions.aggregateTimeout,
-        poll: kanopiPackConfig.devServer.watchOptions.poll
-      }
+      overlay: { warnings: false, errors: true }
     },
     module: {
       rules: [
