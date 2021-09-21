@@ -1,0 +1,33 @@
+{
+    "devServer": {
+        "allowedHosts": [],
+        "host": "0.0.0.0",
+        "port": 80,
+        "sockHost": "",
+        "sockPort": 80,
+        "useProxy": false,
+        "watchOptions": {
+            "aggregateTimeout": 600,
+            "poll": false
+        }
+    },
+    "filePatterns": {
+        "cssOutputPath": "css/[name].css",
+        "entryPoints": {
+            "scripts": "relative/path/to/file.js",
+            "styles": "relative/path/to/file.css"
+        },
+        "jsOutputPath": "js/[name].js"
+    },
+    "paths": {
+        "assetsRelativeToRoot": "assets"
+    },
+    "scripts": {
+        "additionalTypescriptFileTypes": []
+    },
+    "sourceMaps": false,
+    "styles": {
+        "scssIncludes": [],
+        "stylelintAutoFix": true
+    }
+}

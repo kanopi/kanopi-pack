@@ -1,7 +1,11 @@
 /**
  * Main configuration file for Kanopi's Webpack Implementation
  */
+
+const fs = require('fs');
+const chalk = require('chalk');
 const path = require('path');
+const { exit } = require('process');
 const calling_project_root = process.cwd();
 const kanopi_pack_root = path.resolve(__dirname, '..');
 
@@ -16,25 +20,49 @@ const pathResolver = {
 
 const hostBuilder = (host, port) => 80 !== port ? `${host}:${port}` : `${host}`;
 
-let package_variables = require(pathResolver.toCallingPackage('package.json'));
-let assets_relative_to_root = package_variables?.kanopiPackConfig?.paths?.assetsRelativeToRoot ?? 'assets';
+const configuration_locations = [
+    pathResolver.toCallingPackage('kanopi-pack.js'),
+    pathResolver.toCallingPackage('assets/configuration/kanopi-pack.js'),
+    pathResolver.toCallingPackage('kanopi-pack.json'),
+    pathResolver.toCallingPackage('assets/configuration/kanopi-pack.json')
+];
+
+let kanopiPackConfig;
+
+for (let path_index in configuration_locations) {
+    let config_path = configuration_locations[path_index];
+    if (fs.existsSync(config_path)) {
+        kanopiPackConfig = require(config_path);
+        break;
+    }
+}
+
+if (!kanopiPackConfig) {
+    console.log(chalk.red("ERROR: ") + "kanopi-pack.json configuration file not found, checked the following locations:");
+    configuration_locations.forEach((location) => {
+        console.log(chalk.yellow(location));
+    })
+    exit();
+}
+
+let assets_relative_to_root = kanopiPackConfig?.paths?.assetsRelativeToRoot ?? 'assets';
 let assets = pathResolver.toCallingPackage(assets_relative_to_root);
 let distribution_path = pathResolver.toCallingPackage(path.join(assets_relative_to_root, 'dist'));
 let relative_distribution_path = path.join(assets_relative_to_root, 'dist');
 let source_path = pathResolver.toCallingPackage(path.join(assets_relative_to_root, 'src'));
 
-let dev_server_allowed_hosts = (package_variables?.kanopiPackConfig?.devServer?.allowedHosts ?? []).concat([
+let dev_server_allowed_hosts = (kanopiPackConfig?.devServer?.allowedHosts ?? []).concat([
     '.localhost',
     'localhost',
     '.docksal',
     '.test',
     '127.0.0.1'
 ]);
-let dev_server_host = package_variables?.kanopiPackConfig?.devServer?.host ?? '0.0.0.0';
-let dev_server_port = parseInt(package_variables?.kanopiPackConfig?.devServer?.port ?? 4400);
-let dev_server_sock_host = package_variables?.kanopiPackConfig?.devServer?.sockHost ?? '';;
-let dev_server_sock_port = parseInt(package_variables?.kanopiPackConfig?.devServer?.sockPort ?? 80);
-let dev_server_use_proxy = package_variables?.kanopiPackConfig?.devServer?.useProxy ?? false;
+let dev_server_host = kanopiPackConfig?.devServer?.host ?? '0.0.0.0';
+let dev_server_port = parseInt(kanopiPackConfig?.devServer?.port ?? 4400);
+let dev_server_sock_host = kanopiPackConfig?.devServer?.sockHost ?? '';;
+let dev_server_sock_port = parseInt(kanopiPackConfig?.devServer?.sockPort ?? 80);
+let dev_server_use_proxy = kanopiPackConfig?.devServer?.useProxy ?? false;
 let dev_server_local_url = hostBuilder(dev_server_host, dev_server_port);
 let dev_server_url = dev_server_use_proxy ? hostBuilder(dev_server_sock_host, dev_server_sock_port) : dev_server_local_url;
 let dev_server_local_path = `http://${dev_server_local_url}/${relative_distribution_path}/`;
@@ -47,12 +75,12 @@ let dev_server_configuration = {
     port: dev_server_port,
     publicPath: dev_server_public_path,
     watchOptions: {
-        aggregateTimeout: parseInt(package_variables?.kanopiPackConfig?.devServer?.watchOptions?.aggregateTimeout ?? 600),
-        poll: package_variables?.kanopiPackConfig?.devServer?.poll ?? false
+        aggregateTimeout: parseInt(kanopiPackConfig?.devServer?.watchOptions?.aggregateTimeout ?? 600),
+        poll: kanopiPackConfig?.devServer?.watchOptions?.poll ?? false
     }
 };
 
-let typescript_filetype_patterns = package_variables?.kanopiPackConfig?.scripts?.additionalTypescriptFileTypes ?? [];
+let typescript_filetype_patterns = kanopiPackConfig?.scripts?.additionalTypescriptFileTypes ?? [];
 
 if (dev_server_use_proxy) {
     dev_server_configuration = {
@@ -67,10 +95,10 @@ typescript_filetype_patterns.concat([/\.vue$/])
 module.exports = {
     devServer: dev_server_configuration,
     filePatterns: {
-        cssOutputPattern: package_variables?.kanopiPackConfig?.filePatterns?.jsOutputPath ?? 'css/[name].css',
-        entryPoints: package_variables?.kanopiPackConfig?.filePatterns?.entryPoints ?? {},
+        cssOutputPattern: kanopiPackConfig?.filePatterns?.cssOutputPath ?? 'css/[name].css',
+        entryPoints: kanopiPackConfig?.filePatterns?.entryPoints ?? {},
         jsOutputPattern: {
-            filename: package_variables?.kanopiPackConfig?.filePatterns?.jsOutputPath ?? 'js/[name].js',
+            filename: kanopiPackConfig?.filePatterns?.jsOutputPath ?? 'js/[name].js',
             path: distribution_path
         }
     },
@@ -87,10 +115,10 @@ module.exports = {
     scripts: {
         additionalTypescriptFileTypes: typescript_filetype_patterns,
     },
-    sourceMaps: package_variables?.kanopiPackConfig?.sourceMaps ?? false,
+    sourceMaps: kanopiPackConfig?.sourceMaps ?? false,
     styles: {
-        scssIncludes: package_variables?.kanopiPackConfig?.styles?.scssIncludes ?? [],
-        stylelintAutoFix: package_variables?.kanopiPackConfig?.styles?.scssAutoFix ?? true,
+        scssIncludes: kanopiPackConfig?.styles?.scssIncludes ?? [],
+        stylelintAutoFix: kanopiPackConfig?.styles?.scssAutoFix ?? true,
         stylelintConfigPath: path.join(assets, 'configuration', 'tools', '.stylelintrc'),
     }
 }

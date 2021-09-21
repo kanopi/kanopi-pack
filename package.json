@@ -1,6 +1,6 @@
 {
   "name": "@kanopi/pack",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Pre-packaged Webpack 4 configuration with extendable configuration to coordinate loaders and rules for common web stacks",
   "main": "index.js",
   "scripts": {
@@ -40,7 +40,6 @@
     "core-js": "^3.16.2",
     "css-hot-loader": "^1.4.4",
     "css-loader": "^4.3.0",
-    "dotenv": "^10.0.0",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^1.6.2",
     "optimize-css-assets-webpack-plugin": "^5.0.8",
