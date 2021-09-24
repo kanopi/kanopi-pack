@@ -47,7 +47,7 @@ module.exports = merge.smart(
           test: /\.(scss|sass)$/,
           use: [
             'style-loader',
-            ...ScssLoaders(kanopiPackConfig, `$asset_root: '${kanopiPackConfig.devServer.host}';`)
+            ...ScssLoaders(kanopiPackConfig, `$asset_root: '${kanopiPackConfig.paths.devServerPublic}';`)
           ]
         }
       ]
