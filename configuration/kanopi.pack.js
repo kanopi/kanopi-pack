@@ -90,7 +90,7 @@ if (dev_server_use_proxy) {
     }
 }
 
-typescript_filetype_patterns.concat([/\.vue$/])
+typescript_filetype_patterns.concat([/\.vue$/]);
 
 module.exports = {
     devServer: dev_server_configuration,
@@ -118,7 +118,9 @@ module.exports = {
     sourceMaps: kanopiPackConfig?.sourceMaps ?? false,
     styles: {
         scssIncludes: kanopiPackConfig?.styles?.scssIncludes ?? [],
-        stylelintAutoFix: kanopiPackConfig?.styles?.scssAutoFix ?? true,
-        stylelintConfigPath: path.join(assets, 'configuration', 'tools', '.stylelintrc'),
+        styleLintAutoFix: kanopiPackConfig?.styles?.styleLintAutoFix ?? true,
+        styleLintConfigBaseDir: kanopiPackConfig?.styles?.styleLintConfigBaseDir ?? pathResolver.toKanopiPack(''),
+        styleLintConfigFile: kanopiPackConfig?.styles?.styleLintConfigFile ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintrc')),
+        styleLintIgnorePath: kanopiPackConfig?.styles?.styleLintIgnorePath ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintignore'))
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@kanopi/pack",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Pre-packaged Webpack 4 configuration with extendable configuration to coordinate loaders and rules for common web stacks",
   "main": "index.js",
   "scripts": {
@@ -52,7 +52,8 @@
     "style-loader": "^2.0.0",
     "style-resources-loader": "^1.4.1",
     "stylelint": "^13.13.1",
-    "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-config-property-sort-order-smacss": "^7.1.0",
+    "stylelint-order": "^4.1.0",
     "stylelint-webpack-plugin": "^2.2.2",
     "ts-loader": "^7.0.5",
     "tslib": "^2.3.1",

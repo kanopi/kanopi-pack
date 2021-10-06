@@ -44,9 +44,10 @@ module.exports = (kanopiPackConfig) => {
     },
     plugins: [
       new StyleLintPlugin({
-        configBasedir: kanopiPackConfig.resolver.toKanopiPack(''),
-        configFile: kanopiPackConfig.styles.stylelintConfigPath,
-        fix: kanopiPackConfig.styles.stylelintAutoFix
+        configBasedir: kanopiPackConfig.styles.styleLintConfigBaseDir,
+        configFile: kanopiPackConfig.styles.styleLintConfigFile,
+        fix: kanopiPackConfig.styles.styleLintAutoFix,
+        ignorePath: kanopiPackConfig.styles.styleLintIgnorePath
       }),
       new CopyWebpackPlugin({
         patterns: [
