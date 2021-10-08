@@ -109,7 +109,7 @@ Production/distribution setting only, determines if these builds contain source 
 
 
 ## Section: `styles` 
-Style configuration options, especially related to StyleLint. By default, it uses the `stylelint-config-property-sort-order-smacss` ruleset and the Order package is installed. Due to the default, configuration options are set relative to this modules path, and if you plan to install and extend a different ruleset, configure `styleLintConfigBaseDir` to the package/project root directory. Additionally, to ignore file globs, you must set a `.stylelintignore` in the package/project root directory.
+Style configuration options, especially related to StyleLint. By default, it uses the `stylelint-config-property-sort-order-smacss` order (Order package is installed) and a number of sensible rules common at Kanopi. Due to the default, configuration options are set relative to this modules path, and if you plan to install and extend a different ruleset, configure `styleLintConfigBaseDir` to the package/project root directory. Additionally, to ignore file globs, you must set a `.stylelintignore` in the package/project root directory.
 
 ### Strucutre
 
@@ -128,5 +128,5 @@ Style configuration options, especially related to StyleLint. By default, it use
 | `scssIncludes` | [] | No | String[] | Set of SCSS files injected into each SCSS capable entry point |
 | `styleLintAutoFix` | true | No | Boolean | When enabled, automatically fix source files according to StyleLint rules |
 | `styleLintConfigBaseDir` | node_modules/@kanopi/pack | No | String | Relative path for StyleLint configuration options |
-| `styleLintConfigFile` | node_modules/@kanopi/pack/configuration/tools/.stylelintrc | No | String | Relative path for StyleLint configuration file |
+| `styleLintConfigFile` | node_modules/@kanopi/pack/configuration/tools/stylelint.config.js | No | String | Relative path for StyleLint configuration file |
 | `styleLintIgnorePath` | node_modules/@kanopi/pack/configuration/tools/.stylelintignore | No | String | Relative path for a StyleLint ignore file |

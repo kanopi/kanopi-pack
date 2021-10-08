@@ -120,7 +120,7 @@ module.exports = {
         scssIncludes: kanopiPackConfig?.styles?.scssIncludes ?? [],
         styleLintAutoFix: kanopiPackConfig?.styles?.styleLintAutoFix ?? true,
         styleLintConfigBaseDir: kanopiPackConfig?.styles?.styleLintConfigBaseDir ?? pathResolver.toKanopiPack(''),
-        styleLintConfigFile: kanopiPackConfig?.styles?.styleLintConfigFile ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintrc')),
+        styleLintConfigFile: kanopiPackConfig?.styles?.styleLintConfigFile ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', 'stylelint.config.json')),
         styleLintIgnorePath: kanopiPackConfig?.styles?.styleLintIgnorePath ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintignore'))
     }
 }
