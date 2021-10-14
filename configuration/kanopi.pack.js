@@ -102,6 +102,10 @@ module.exports = {
             path: distribution_path
         }
     },
+    minification: {
+        enable: kanopiPackConfig?.minification?.enable ?? true,
+        options: kanopiPackConfig?.minification?.options ?? {}
+    },
     paths: {
         assets: assets,
         assetsRelativeToRoot: assets_relative_to_root,

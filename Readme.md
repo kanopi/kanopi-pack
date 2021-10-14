@@ -66,6 +66,29 @@ A map of input (`entryPoints`) file locations and output file path patterns.
 | `entryPoints` | {} | Yes | ObjectMap[Name:FilePath] |  Map of `[name]` tokens to the entry file path; the project fails/exits if this is empty |
 | `jsOutputPath` | js/[name].js | No | String | Output path for CSS files, accepts tokens like `[name]` and `[hash]` |
 
+## Section: `minification` 
+Configure minification of assets using Terser.
+
+### Strucutre
+
+    "minification": {
+        "enable": true,
+        "options": {
+            "terserOptions": {
+                "mangle": true,
+               ... other Terser options ...
+            }
+        },
+    }
+
+
+### Details
+
+| Setting | Default | Required? | Type | Usage |
+|---------|---------|:---------:|------|-------|
+| `enable` | true | No | Boolean | Enable/disable minification of assets |
+| `options` | {} | No | Object |  Terser plugin options, use the `terserOptions` key for Terser options |
+
 
 ## Section: `paths` 
 Settings for the asset structure, by default, all source assets are in the `assets/src` folder and all distribution assets are in the `assets/dist` folder, relative to the package/project root.
