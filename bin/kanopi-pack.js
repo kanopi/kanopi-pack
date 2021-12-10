@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
 const chalk = require('chalk');
-const program = require('../commands/index');
+const package = require('../index');
+const {
+    commands: { standard: program },
+    configuration: { development, production },
+    runners: { runDevServer, runWebpack }
+} = package;
 
 program
     .command('standard')
@@ -15,8 +20,8 @@ program
         console.log('');
 
         isDevelopment 
-            ? require('../runDevServer')(require('../configuration/webpack.development'))
-            : require('../runWebpack')(require('../configuration/webpack.production'));
+            ? runDevServer(development)
+            : runWebpack(production);
     });
 
 program.parse(process.argv);

@@ -42,6 +42,20 @@ Configure Webpack Dev Server, by default runs on `0.0.0.0:4400`, with asset list
 | `watchOptions.aggregateTimeout` | 600 | No | Numeric | Wait time (debounce) after a file change to process bundle changes |
 | `watchOptions.poll` | false | No | Boolean | Set true to enable file system pooling, required for use in containers |
 
+## Section: `externals` 
+Optional settings to map externally loaded script libraries, useful if a CMS or Framework load these scripts external to these bundles.
+
+### Strucutre
+
+    "externals": {
+        "jquery": "jQuery"
+    }
+
+
+### Details
+
+List of key/value pair which match the Package name (i.e. `'jquery'`) to the its Global/Window location (i.e. `'jQuery'` for `window.jQuery`).
+
 
 ## Section: `filePatterns` 
 A map of input (`entryPoints`) file locations and output file path patterns.
@@ -96,6 +110,9 @@ Settings for the asset structure, by default, all source assets are in the `asse
 ### Strucutre
 
     "paths": {
+        "aliases": {
+            "@": './path/to/source_files/'
+        },
         "assetsRelativeToRoot": "assets"
     }
 
@@ -104,6 +121,7 @@ Settings for the asset structure, by default, all source assets are in the `asse
 
 | Setting | Default | Required? | Type | Usage |
 |---------|---------|-----------|------|-------|
+| `aliases` | { '@': './assets/src/'} | No | Object | List of string/sybmol aliases to source folders; helps manage import/path references |
 | `assetsRelativeToRoot` | assets | No | String | Containing folder for all assets, relative to the package/project root |
 
 
@@ -153,3 +171,45 @@ Style configuration options, especially related to StyleLint. By default, it use
 | `styleLintConfigBaseDir` | node_modules/@kanopi/pack | No | String | Relative path for StyleLint configuration options |
 | `styleLintConfigFile` | node_modules/@kanopi/pack/configuration/tools/stylelint.config.js | No | String | Relative path for StyleLint configuration file |
 | `styleLintIgnorePath` | node_modules/@kanopi/pack/configuration/tools/.stylelintignore | No | String | Relative path for a StyleLint ignore file |
+
+# Extending Kanopi Pack
+
+## Intent of Package
+Almost everything within the current `@kanopi/pack` package is exposed externally to allow reuse of the Standard configuration, while allowing full, quick composition of a new/extended configuration. The intent is for this package to be included as a Peer Package dependency to avoid module duplication in the file system.
+
+### Package Strucutre
+When`@kanopi/pack` is referenced in another package (i.e. `require('@kanopi/pack')`), it returns a structure with fragments of the standard configuration for extended composition, pre-built configurations, a wrapper for the kanopi-pack command, and development and production build runners. Globbing is used to build the package tree based of folder/file name, so the structure will mimic the directory structure of the `src/` directory, with pre-built/standard configurations under `configuration`.
+
+
+    {
+        "commands": {
+            "standard": 'Wrapper for the Commander CLI runner, see repository and bin script for example usage'
+        }
+        "configuration": {
+            "common": 'Common profile and plugins for all build profiles',
+            "development": 'Development server profile and plugins',
+            "production": 'Production build profile and plugins',
+        },
+        "components": {
+            "loaders": {
+                ... Set of standard loaders for Babel and Styles
+            },
+            "plugins": {
+                ... Set of plugins for each standard environment profile
+            },
+            "profiles": {
+                ... Set/profile of common Webpack settings for each standard environment
+            },
+            "rules": {
+                ... Set of standard Webpack rules for Files and Scripts
+            }
+        },
+        "environment": {
+            "standard": 'Environment settings based on the projects configuration file, injected into most Kanopi Pack configurations and components'
+        },
+        "runners": {
+            "runDevServer": 'Runs Webpack Dev Server based on the provided configuration',
+            "runWebpack": 'Runs Webpack production build based on the provided configuration'
+        }
+    }
+

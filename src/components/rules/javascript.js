@@ -1,11 +1,11 @@
 const BabelLoader = require('../loaders/babel');
 
-module.exports = (kanopiPackConfig) => {
+module.exports = (environment) => {
     return [
         {
             test: /\.js$/,
             exclude: /node_modules/,
-            use: BabelLoader(kanopiPackConfig)
+            use: BabelLoader(environment)
         }
     ]
 }

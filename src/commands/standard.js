@@ -1,5 +1,5 @@
 const { Command } = require('commander');
-const package = require('../package.json');
+const package = require('../../package.json');
 const program = new Command();
 
 program

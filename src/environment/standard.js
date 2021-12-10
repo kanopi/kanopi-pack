@@ -3,11 +3,10 @@
  */
 
 const fs = require('fs');
-const chalk = require('chalk');
 const path = require('path');
 const { exit } = require('process');
 const calling_project_root = process.cwd();
-const kanopi_pack_root = path.resolve(__dirname, '..');
+const kanopi_pack_root = path.resolve(__dirname, '..', '..');
 
 const pathResolver = {
     toCallingPackage: (pathFragment) => {
@@ -15,8 +14,13 @@ const pathResolver = {
     },
     toKanopiPack: (pathFragment) => {
         return path.resolve(kanopi_pack_root, pathFragment);
+    },
+    requirePackageModule: (packageName) => {
+        return require(pathResolver.toCallingPackage('node_modules/' + packageName));
     }
 };
+
+const chalk = pathResolver.requirePackageModule('chalk');
 
 const hostBuilder = (host, port) => 80 !== port ? `${host}:${port}` : `${host}`;
 
@@ -50,6 +54,7 @@ let assets = pathResolver.toCallingPackage(assets_relative_to_root);
 let distribution_path = pathResolver.toCallingPackage(path.join(assets_relative_to_root, 'dist'));
 let relative_distribution_path = path.join(assets_relative_to_root, 'dist');
 let source_path = pathResolver.toCallingPackage(path.join(assets_relative_to_root, 'src'));
+let path_aliases = kanopiPackConfig?.paths?.aliases ?? { '@': source_path };
 
 let dev_server_allowed_hosts = (kanopiPackConfig?.devServer?.allowedHosts ?? []).concat([
     '.localhost',
@@ -80,6 +85,8 @@ let dev_server_configuration = {
     }
 };
 
+let externalScripts = kanopiPackConfig?.externals ?? { jquery: 'jQuery' };
+
 let typescript_filetype_patterns = kanopiPackConfig?.scripts?.additionalTypescriptFileTypes ?? [];
 
 if (dev_server_use_proxy) {
@@ -94,6 +101,7 @@ typescript_filetype_patterns.concat([/\.vue$/]);
 
 module.exports = {
     devServer: dev_server_configuration,
+    externals: externalScripts,
     filePatterns: {
         cssOutputPattern: kanopiPackConfig?.filePatterns?.cssOutputPath ?? 'css/[name].css',
         entryPoints: kanopiPackConfig?.filePatterns?.entryPoints ?? {},
@@ -107,6 +115,7 @@ module.exports = {
         options: kanopiPackConfig?.minification?.options ?? {}
     },
     paths: {
+        aliases: path_aliases,
         assets: assets,
         assetsRelativeToRoot: assets_relative_to_root,
         devServerLocal: dev_server_local_path,

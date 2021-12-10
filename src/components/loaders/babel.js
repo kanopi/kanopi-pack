@@ -1,4 +1,4 @@
-module.exports = (kanopiPackConfig) => {
+module.exports = (environment) => {
     return [
         {
             loader: 'babel-loader',
@@ -13,7 +13,7 @@ module.exports = (kanopiPackConfig) => {
                         }
                     ]
                 ],
-                sourceMaps: kanopiPackConfig.sourceMaps
+                sourceMaps: environment.sourceMaps
             }
         }
     ];
