@@ -97,8 +97,6 @@ if (dev_server_use_proxy) {
     }
 }
 
-typescript_filetype_patterns.concat([/\.vue$/]);
-
 module.exports = {
     devServer: dev_server_configuration,
     externals: externalScripts,
@@ -127,6 +125,9 @@ module.exports = {
     resolver: pathResolver,
     scripts: {
         additionalTypescriptFileTypes: typescript_filetype_patterns,
+        esLintAutoFix: kanopiPackConfig?.scripts?.esLintAutoFix ?? true,
+        esLintDisable: kanopiPackConfig?.scripts?.esLintDisable ?? false,
+        esLintFileTypes: (kanopiPackConfig?.scripts?.esLintFileTypes ?? 'js,jsx,ts').split(',')
     },
     sourceMaps: kanopiPackConfig?.sourceMaps ?? false,
     styles: {
