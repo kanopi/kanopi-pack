@@ -131,6 +131,7 @@ JavaScript and TypeScript related configuration.
 ### Strucutre
 
     "scripts": {
+        "additionalResolveExtensions": '',
         "additionalTypescriptFileTypes": [],
         "esLintAutoFix": true,
         "esLintDisabld": false,
@@ -142,7 +143,8 @@ JavaScript and TypeScript related configuration.
 
 | Setting | Default | Required? | Type | Usage |
 |---------|---------|:---------:|------|-------|
-| `additionalTypescriptFileTypes` | .vue | No | String | Additional file types containing TypeScript, other than .ts |
+| `additionalResolveExtensions` |  | No | String | Additional extensions which can be automatically use in JS import statements, added to .js, .ts, and .json |
+| `additionalTypescriptFileTypes` |  | No | String | Additional file types containing TypeScript, other than .ts |
 | `esLintAutoFix` | true | No | Boolean | Enable to auto-fix source files on lint |
 | `esLintDisable` | false | No | Boolean | Enable to disable ESLint through Webpack |
 | `esLintFileTypes` | js,jsx,ts | No | String | Comma-delimited list of linted file extensions (no dot); overrides default |
@@ -152,7 +154,7 @@ Production/distribution setting only, determines if these builds contain source 
 
 ### Strucutre
 
-    "scripts": false
+    "sourceMaps": false
 
 
 ## Section: `styles` 

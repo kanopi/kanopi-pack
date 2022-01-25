@@ -10,11 +10,21 @@ module.exports = (configuration) => {
     const { 
         externals: externalScripts, 
         filePatterns: { entryPoints, jsOutputPattern }, 
-        paths: { aliases } 
+        paths: { aliases },
+        scripts: { additionalResolveExtensions } 
     } = configuration;
+
+    let resolveExtensions = [ '.js', '.ts', '.json' ];
+
+    if ('' !== additionalResolveExtensions) {
+        let extensions = additionalResolveExtensions.split(',');
+        resolveExtensions = resolveExtensions.concat(extensions);
+    }
+
 
     return {
         resolve: {
+            extensions: resolveExtensions,
             alias: aliases
         },
         entry: entryPoints,

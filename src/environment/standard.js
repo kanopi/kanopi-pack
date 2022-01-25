@@ -86,7 +86,7 @@ let dev_server_configuration = {
 };
 
 let externalScripts = kanopiPackConfig?.externals ?? { jquery: 'jQuery' };
-
+let additionalResolveExtensions = kanopiPackConfig?.scripts?.additionalResolveExtensions ?? '';
 let typescript_filetype_patterns = kanopiPackConfig?.scripts?.additionalTypescriptFileTypes ?? [];
 
 if (dev_server_use_proxy) {
@@ -124,6 +124,7 @@ module.exports = {
     },
     resolver: pathResolver,
     scripts: {
+        additionalResolveExtensions: additionalResolveExtensions,
         additionalTypescriptFileTypes: typescript_filetype_patterns,
         esLintAutoFix: kanopiPackConfig?.scripts?.esLintAutoFix ?? true,
         esLintDisable: kanopiPackConfig?.scripts?.esLintDisable ?? false,
