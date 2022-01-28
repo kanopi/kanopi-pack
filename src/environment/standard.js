@@ -128,7 +128,7 @@ module.exports = {
         additionalTypescriptFileTypes: typescript_filetype_patterns,
         esLintAutoFix: kanopiPackConfig?.scripts?.esLintAutoFix ?? true,
         esLintDisable: kanopiPackConfig?.scripts?.esLintDisable ?? false,
-        esLintFileTypes: (kanopiPackConfig?.scripts?.esLintFileTypes ?? 'js,jsx,ts, tsx').split(','),
+        esLintFileTypes: (kanopiPackConfig?.scripts?.esLintFileTypes ?? 'js,jsx,ts,tsx').split(','),
         useJsxSyntax: kanopiPackConfig?.scripts?.useJsxSyntax ?? false
     },
     sourceMaps: kanopiPackConfig?.sourceMaps ?? false,

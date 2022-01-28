@@ -134,8 +134,9 @@ JavaScript and TypeScript related configuration.
         "additionalResolveExtensions": '',
         "additionalTypescriptFileTypes": [],
         "esLintAutoFix": true,
-        "esLintDisabld": false,
-        "esLintFileTypes": 'js,jsx,ts'
+        "esLintDisable": false,
+        "esLintFileTypes": 'js,jsx,ts,tsx',
+        "useJsxSyntax": false
     }
 
 
@@ -143,11 +144,12 @@ JavaScript and TypeScript related configuration.
 
 | Setting | Default | Required? | Type | Usage |
 |---------|---------|:---------:|------|-------|
-| `additionalResolveExtensions` |  | No | String | Additional extensions which can be automatically use in JS import statements, added to .js, .ts, and .json |
+| `additionalResolveExtensions` |  | No | String | Additional extensions which can be automatically use in JS import statements, added to .js, .ts, and .json. If Jsx is enabled, .jsx and .tsx are also enabled. |
 | `additionalTypescriptFileTypes` |  | No | String | Additional file types containing TypeScript, other than .ts |
 | `esLintAutoFix` | true | No | Boolean | Enable to auto-fix source files on lint |
 | `esLintDisable` | false | No | Boolean | Enable to disable ESLint through Webpack |
-| `esLintFileTypes` | js,jsx,ts | No | String | Comma-delimited list of linted file extensions (no dot); overrides default |
+| `esLintFileTypes` | js,jsx,ts,tsx | No | String | Comma-delimited list of linted file extensions (no dot); overrides default |
+| `useJsxSyntax` | false | No | Boolean | Enable to process JSX/TSX files through Babel |
 
 ## Section: `sourceMaps` 
 Production/distribution setting only, determines if these builds contain source maps. By default, this is disabled, and should be for most circumstances.
