@@ -11,10 +11,14 @@ module.exports = (configuration) => {
         externals: externalScripts, 
         filePatterns: { entryPoints, jsOutputPattern }, 
         paths: { aliases },
-        scripts: { additionalResolveExtensions } 
+        scripts: { additionalResolveExtensions, useJsxSyntax } 
     } = configuration;
 
     let resolveExtensions = [ '.js', '.ts', '.json' ];
+
+    if(useJsxSyntax) {
+        resolveExtensions = resolveExtensions.concat(['.jsx', '.tsx']);
+    }
 
     if ('' !== additionalResolveExtensions) {
         let extensions = additionalResolveExtensions.split(',');
