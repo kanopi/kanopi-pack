@@ -6,27 +6,27 @@
  * @returns {object} Webpack environment partial pattern
  */
 module.exports = (environment) => {
-    const { 
-        minification: { enable: enableMinification, options: minificationOptions },
-        resolver: { requirePackageModule }
-    } = environment;
+  const {
+    minification: { enable: enableMinification, options: minificationOptions },
+    resolver: { requirePackageModule }
+  } = environment;
 
-    const OptimizeCSSAssetsPlugin = requirePackageModule('optimize-css-assets-webpack-plugin');
-    const TerserWebpackPlugin = requirePackageModule('terser-webpack-plugin');
+  const MiniCSSExtractPlugin = requirePackageModule('mini-css-extract-plugin');
+  const TerserWebpackPlugin = requirePackageModule('terser-webpack-plugin');
 
-    const optimization = {
-        minimize: enableMinification,
-        minimizer: [
-          new OptimizeCSSAssetsPlugin({})
-        ]
-      }
-      
-      if (enableMinification) {
-        optimization.minimizer.push(new TerserWebpackPlugin(minificationOptions));
-      }
+  const optimization = {
+    minimize: enableMinification,
+    minimizer: [
+      new MiniCSSExtractPlugin()
+    ]
+  }
 
-    return {
-        mode: 'production',
-        optimization: optimization    
-    };
+  if (enableMinification) {
+    optimization.minimizer.push(new TerserWebpackPlugin(minificationOptions));
+  }
+
+  return {
+    mode: 'production',
+    optimization: optimization
+  };
 }

@@ -11,7 +11,7 @@ const {
 const { resolver: { requirePackageModule } } = standardEnvironment;
 
 const common = require('./common');
-const merge = requirePackageModule('webpack-merge');
+const { merge } = requirePackageModule('webpack-merge');
 
 const { loader: ExtractCSSLoader } = requirePackageModule('mini-css-extract-plugin');
 

@@ -79,13 +79,21 @@ let dev_server_public_path = dev_server_use_ssl_proxy
 
 let dev_server_configuration = {
     allowedHosts: dev_server_allowed_hosts,
-    contentBase: distribution_path,
+    devMiddleware: {
+        publicPath: dev_server_public_path,
+    },
     host: dev_server_host,
     port: dev_server_port,
-    publicPath: dev_server_public_path,
-    watchOptions: {
-        aggregateTimeout: parseInt(kanopiPackConfig?.devServer?.watchOptions?.aggregateTimeout ?? 600),
-        poll: kanopiPackConfig?.devServer?.watchOptions?.poll ?? false
+    static: {
+        directory: distribution_path,
+    },
+    watchFiles: {
+        options: {
+            awaitWriteFinish: {
+                stabilityThreshold: parseInt(kanopiPackConfig?.devServer?.watchOptions?.aggregateTimeout ?? 600)
+            },
+            usePolling: kanopiPackConfig?.devServer?.watchOptions?.poll ?? false
+        }
     }
 };
 
@@ -96,8 +104,12 @@ let typescript_filetype_patterns = kanopiPackConfig?.scripts?.additionalTypescri
 if (dev_server_use_proxy) {
     dev_server_configuration = {
         ...dev_server_configuration,
-        sockHost: dev_server_sock_host,
-        sockPort: dev_server_sock_port
+        client: {
+            webSocketURL: {
+                hostname: dev_server_sock_host,
+                port: dev_server_sock_port
+            }
+        }
     }
 }
 

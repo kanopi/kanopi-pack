@@ -10,10 +10,8 @@ const path = require('path');
 module.exports = (environment) => {
   const { requirePackageModule } = environment.resolver;
   const AssetsPlugin = requirePackageModule('assets-webpack-plugin');
-  const webpack = requirePackageModule('webpack');
 
   return [
-    new webpack.HotModuleReplacementPlugin(),
     new AssetsPlugin({
       fileTypes: ['js', 'css'],
       keepInMemory: true,
