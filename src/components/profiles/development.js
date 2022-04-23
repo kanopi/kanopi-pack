@@ -19,6 +19,7 @@ module.exports = (configuration) => {
     devServer: {
       ...devServerSettings,
       client: {
+        ...devServerSettings.client,
         overlay: { warnings: false, errors: true }
       },
       headers: {

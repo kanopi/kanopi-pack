@@ -23,11 +23,13 @@ module.exports = (environment) => {
     new CleanWebpackPlugin(),
     new AssetsPlugin({
       fileTypes: ['js', 'css'],
+      fullPath: false,
       includeAllFileTypes: false,
       includeManifest: 'manifest',
-      manifestFirst: true,
+      manifestFirst: false,
       path: distributionPath,
-      prettyPrint: true
+      prettyPrint: true,
+      removeFullPathAutoPrefix: true
     })
   ];
 }
