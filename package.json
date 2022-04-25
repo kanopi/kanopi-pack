@@ -1,6 +1,6 @@
 {
   "name": "@kanopi/pack",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Pre-packaged Webpack 4 configuration with extendable configuration to coordinate loaders and rules for common web stacks",
   "main": "index.js",
   "scripts": {
