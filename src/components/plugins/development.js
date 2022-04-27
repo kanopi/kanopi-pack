@@ -14,6 +14,7 @@ module.exports = (environment) => {
   return [
     new AssetsPlugin({
       fileTypes: ['js', 'css'],
+      fullPath: false,
       keepInMemory: true,
       includeAllFileTypes: false,
       includeManifest: 'manifest',

@@ -32,6 +32,8 @@ module.exports = (configuration) => {
           'application/xhtml+xml'
         ]
       },
+      hot: 'only',
+      liveReload: false,
       setupExitSignals: true
     }
   };

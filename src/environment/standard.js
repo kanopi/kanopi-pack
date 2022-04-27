@@ -86,14 +86,9 @@ let dev_server_configuration = {
     port: dev_server_port,
     static: {
         directory: distribution_path,
-        serveIndex: true,
-        watch: true
     },
     watchFiles: {
         options: {
-            awaitWriteFinish: {
-                stabilityThreshold: parseInt(kanopiPackConfig?.devServer?.watchOptions?.aggregateTimeout ?? 600)
-            },
             usePolling: kanopiPackConfig?.devServer?.watchOptions?.poll ?? false
         }
     }
