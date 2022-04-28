@@ -1,8 +1,8 @@
-const { 
+const {
   components: {
     loaders: { styles: StyleLoaders },
     plugins: { development: devServerPlugins },
-    profiles: { development: devServerProfile }, 
+    profiles: { development: devServerProfile },
     rules: { file: FileRules, typescript: TypescriptRules }
   },
   environment: { standard: standardEnvironment }
@@ -27,7 +27,7 @@ module.exports = merge.smart(
         ...FileRules(),
         ...TypescriptRules(environment),
         {
-          test: /\.(scss|sass)$/,
+          test: /\.(css|scss|sass)$/,
           use: [
             'style-loader',
             ...StyleLoaders(environment, `$asset_root: '${environment.paths.devServerPublic}';`)

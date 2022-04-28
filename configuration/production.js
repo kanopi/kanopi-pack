@@ -1,8 +1,8 @@
-const { 
+const {
   components: {
     loaders: { styles: StyleLoaders },
     plugins: { production: productionPlugins },
-    profiles: { production: productionProfile }, 
+    profiles: { production: productionProfile },
     rules: { file: FileRules, typescript: TypescriptRules }
   },
   environment: { standard: standardEnvironment }
@@ -24,7 +24,7 @@ module.exports = merge(
         ...FileRules(),
         ...TypescriptRules(standardEnvironment),
         {
-          test: /\.(scss|sass)$/,
+          test: /\.(css|scss|sass)$/,
           use: [
             {
               loader: ExtractCSSLoader
