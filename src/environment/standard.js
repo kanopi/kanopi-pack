@@ -68,10 +68,13 @@ let dev_server_port = parseInt(kanopiPackConfig?.devServer?.port ?? 4400);
 let dev_server_sock_host = kanopiPackConfig?.devServer?.sockHost ?? '';;
 let dev_server_sock_port = parseInt(kanopiPackConfig?.devServer?.sockPort ?? 80);
 let dev_server_use_proxy = kanopiPackConfig?.devServer?.useProxy ?? false;
+let dev_server_use_ssl_proxy = kanopiPackConfig?.devServer?.useSslProxy ?? false;
 let dev_server_local_url = hostBuilder(dev_server_host, dev_server_port);
 let dev_server_url = dev_server_use_proxy ? hostBuilder(dev_server_sock_host, dev_server_sock_port) : dev_server_local_url;
 let dev_server_local_path = `http://${dev_server_local_url}/${relative_distribution_path}/`;
-let dev_server_public_path = `http://${dev_server_url}/${relative_distribution_path}/`;
+let dev_server_public_path = dev_server_use_ssl_proxy
+    ? `https://${dev_server_url}/${relative_distribution_path}/`
+    : `http://${dev_server_url}/${relative_distribution_path}/`;
 
 let dev_server_configuration = {
     allowedHosts: dev_server_allowed_hosts,

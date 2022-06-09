@@ -36,7 +36,8 @@ Configure Webpack Dev Server, by default runs on `0.0.0.0:4400`, with asset list
 | `host` | 0.0.0.0 | No | String | Host Name/IP(s) of the server |
 | `port` | 4400 | No | Numeric | Port of the server |
 | `sockHost` |  | No | String | Proxy Host Name/IP(s), sets publicPath of server assets |
-| `sockPort` | 80 | No | Numeric | Proxy Host Port, only active if `useProxy` is enabled |
+| `sockPort` | 80 | No | Numeric | Proxy Host Port, set to 443 for SSL, only active if `useProxy` is enabled |
+| `useSslProxy` | false | No | Boolean | Set true to enable SSL for the proxy, only active if `useProxy` is enabled |
 | `useProxy` | false | No | Boolean | Set true to enable the proxy |
 | `watchOptions` |  | No | Object | - |
 | `watchOptions.aggregateTimeout` | 600 | No | Numeric | Wait time (debounce) after a file change to process bundle changes |
