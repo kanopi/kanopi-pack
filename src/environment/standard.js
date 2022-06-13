@@ -7,6 +7,7 @@ const path = require('path');
 const { exit } = require('process');
 const calling_project_root = process.cwd();
 const kanopi_pack_root = path.resolve(__dirname, '..', '..');
+const { read_environment_variables } = require('./modules/environment');
 
 const pathResolver = {
     toCallingPackage: (pathFragment) => {
@@ -102,6 +103,7 @@ if (dev_server_use_proxy) {
 
 module.exports = {
     devServer: dev_server_configuration,
+    environment: read_environment_variables(kanopiPackConfig?.environment ?? {}),
     externals: externalScripts,
     filePatterns: {
         cssOutputPattern: kanopiPackConfig?.filePatterns?.cssOutputPath ?? 'css/[name].css',

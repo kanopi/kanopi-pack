@@ -43,6 +43,27 @@ Configure Webpack Dev Server, by default runs on `0.0.0.0:4400`, with asset list
 | `watchOptions.aggregateTimeout` | 600 | No | Numeric | Wait time (debounce) after a file change to process bundle changes |
 | `watchOptions.poll` | false | No | Boolean | Set true to enable file system pooling, required for use in containers |
 
+## Section: `environment` 
+Optional settings configure environment variables through Dotenv.
+
+### Strucutre
+
+    "environment": {
+        "dotenvEnable": true,
+        "dotenvConfiguration": {
+            ... Dotenv options
+        }
+    }
+
+
+### Details
+
+| Setting | Default | Required? | Type | Usage |
+|---------|---------|:---------:|------|-------|
+| `dotenvConfiguration` | {} | No | Object | Configuration for Dotenv |
+| `dotenvEnable` | true | No | Boolean | Set true to enable Dotenv |
+
+
 ## Section: `externals` 
 Optional settings to map externally loaded script libraries, useful if a CMS or Framework load these scripts external to these bundles.
 
