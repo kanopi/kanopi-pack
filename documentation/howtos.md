@@ -2,7 +2,16 @@
 
 ([back to Readme](../Readme.md))
 
-## Migrate Existing Assets with a Default Configuration
+## Table of contents
+
+- [Implement Kanopi Pack for an Existing Project](#implement-kanopi-pack-for-an-existing-project)
+- [Make Existing JavaScript Modular](#make-existing-javascript-modular)
+- [Add a New NPM Module to a Project Module](#add-a-new-npm-module-to-a-project-module)
+- [Use CMS or System Provided JavaScript Libraries](#use-cms-or-system-provided-javascript-libraries)
+- [Configure Cache Busting within Kanopi Pack](#configure-cache-busting-within-kanopi-pack)
+- [Use Static Assets from the Build System](#use-static-assets-from-the-build-system)
+
+## Implement Kanopi Pack for an Existing Project
 
 An example configuration is found in this repository under `examples/base-no-typescript`.
 
@@ -20,6 +29,7 @@ In the example, there is a single entry point, `index.scss` which includes/uses 
 
 1. Add an appropriate ESLint configuration file. There are examples included, and if unsure, a basic implementation is described [here](./eslint.md#no-typescript).
 1. Add your JavaScript modules to the JavaScript entry point with import statements. See the section [Make Existing JavaScript Modular](#make-existing-javascript-modular) for examples if your existing code is not modular.
+
 
 ## Make Existing JavaScript Modular
 
@@ -53,7 +63,8 @@ The important part in this segment is the format of a function which is immediat
 
 There are other, better approaches to refactoring this code, this in NOT a best practice. Use this approach to quickly make existing code function within the bundler. 
 
-## Use CMS/System Provided JavaScript Libraries
+
+## Use CMS or System Provided JavaScript Libraries
 
 CMS's like Drupal or WordPress, chances are there are existing JS libraries loaded by the system, like jQuery or Lodash. If your existing code uses these libraries, or you need to write code which uses them, you need the asset bundler to know they exist. 
 
@@ -86,7 +97,6 @@ modules.export = {
         }
     ]
 }
-
 
 /**
  * Default request to global transformation
@@ -123,7 +133,8 @@ function defaultRequestToExternal(request) {
 
 ```
 
-## Use an Module from NPM to build a Project Module
+
+## Add a New NPM Module to a Project Module
 
 Consider we want to use a slider library, in this case, it's available on NPM as `@kanopi/slider` which contains a **Named Export** of `KanopiSlider`.
 
@@ -167,3 +178,48 @@ import { ProjectSlider } from 'modules/slider`;
 
 ProjectSlider('.element_selector');
 ```
+
+## Configure Cache Busting within Kanopi Pack
+
+In order to enable cache busting within Kanopi Pack, you need to tell the Kanopi Pack configuration to output file names with hashes.
+
+Modify the kanopi-pack.js file like the following:
+
+```javascript
+modules.export = {
+    // ... rest of file
+    "filePatterns": {
+        "cssOutputPath": "css/[name].[hash].css",
+        "entryPoints": {
+            "legacy": "./assets/src/js/legacy.js",
+            "theme": "./assets/src/scss/index.scss"
+        },
+        "jsOutputPath": "js/[name].[hash].js"
+    }
+}
+```
+
+You will then find a file in the output directory, by default `assets/dist/webpack-assets.json`, containing mappings like this:
+
+```json
+{
+  "legacy": {
+    "js": "js/legacy.1080064923bd38698545.js"
+  },
+  "theme": {
+    "css": "css/theme.1080064923bd38698545.css",
+    "js": "js/theme.1080064923bd38698545.js"
+  },
+  "runtime": {
+    "js": "js/runtime.1080064923bd38698545.js"
+  },
+  "vendor": {
+    "js": "js/vendor.1080064923bd38698545.js"
+  }
+}
+```
+
+
+## Use Static Assets from the Build System
+
+Placeholder
