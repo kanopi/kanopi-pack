@@ -8,7 +8,7 @@ ESLint support is added, enabled by default, to target all JavaScript and TypeSc
 
 To globally lint all assets within `./assets/src/`, add an `.eslintrc.js` file in the directory to configure ESLint. Please note, ESLint continues looking at parent directories for more rules, until it encounters the `"root": true` attribute. This can also be used to override rules in a child directory.
 
-## Example .eslintrc.js File (no TypeScript)
+## <a name="no-typescript">Example</a> .eslintrc.js File (no TypeScript)
 
 ```./assets/src/.eslintrc.js
 module.exports = {

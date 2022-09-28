@@ -1,0 +1,169 @@
+# How To Guides
+
+([back to Readme](../Readme.md))
+
+## Migrate Existing Assets with a Default Configuration
+
+An example configuration is found in this repository under `examples/base-no-typescript`.
+
+1. Install the package to the theme, plugin, etc. directory with npm
+
+### CSS/SCSS
+
+1. Move any CSS/SCSS assets in the `assets/src/scss` folder.
+1. If you have existing SCSS entry point from Gulp, Grunt, etc use that as your entry point.
+1. If you only have CSS files, you can copy/paste them directly into a SCSS file with minimal change.
+
+In the example, there is a single entry point, `index.scss` which includes/uses SCSS from another file. SCSS is moving to a modular style of composition, which probably doesn't match your legacy codebase. You can mimic this global @import (deprecated) style of inclusion with `@use 'path/to/scss_file' as *;`. 
+
+### JS
+
+1. Add an appropriate ESLint configuration file. There are examples included, and if unsure, a basic implementation is described [here](./eslint.md#no-typescript).
+1. Add your JavaScript modules to the JavaScript entry point with import statements. See the section [Make Existing JavaScript Modular](#make-existing-javascript-modular) for examples if your existing code is not modular.
+
+## Make Existing JavaScript Modular
+
+JavaScript loaded and processed by the asset bundler is expected to be in ES modules or automatically run closures.
+
+For example, your project uses legacy JavaScript, like a jQuery based slider, placed inside a template or directly included script file. 
+
+The function may look something like the following snippet, which uses both jQuery and lodash:
+
+```javascript
+$(document).load(function() {
+    _.each($('.elements'), function (item) {
+        item.sliderInitialization();
+    });
+});
+```
+
+Transform this into a loadable module, which uses window/global attached versions of jQuery and lodash:
+
+```javascript
+(function(viewport, $, _) {
+    $(viewport).load(function() {
+        _.each($('.elements'), function (item) {
+            item.sliderInitialization();
+        });
+    });
+})(document, window.jQuery, window.lodash);
+```
+
+The important part in this segment is the format of a function which is immediate called with supplied arguments: `(function(...argument_list){})(...supplied_arguments)`.
+
+There are other, better approaches to refactoring this code, this in NOT a best practice. Use this approach to quickly make existing code function within the bundler. 
+
+## Use CMS/System Provided JavaScript Libraries
+
+CMS's like Drupal or WordPress, chances are there are existing JS libraries loaded by the system, like jQuery or Lodash. If your existing code uses these libraries, or you need to write code which uses them, you need the asset bundler to know they exist. 
+
+This is accomplished by adding a configuration section called `externals` to the Kanopi Pack configuration which maps the external library to an internal name for use inside the compiled assets. The section can be either a direct mapping, or a function which passes the package name, useful for processing a large set of libraries.
+
+### Mapped List Example
+
+```javascript
+modules.export = {
+    // ... rest of file
+    "externals": {
+        "jquery": "jQuery",
+        "lodash": "lodash",
+        "lodash-es": "lodash"
+    }
+}
+```
+
+### Function Example
+
+
+```javascript
+modules.export = {
+    // ... rest of file
+    "externals": [
+        function (_context, request, callback) {
+            let externalRequest = defaultRequestToExternal(request);
+
+            return externalRequest ? callback(null, externalRequest) : callback();
+        }
+    ]
+}
+
+
+/**
+ * Default request to global transformation
+ * 
+ *  - `undefined` ignores the request
+ *  - `string|string[]` maps the request to an external library
+ * 
+ * @param {string} request Module request (the module name in `import from`) to be transformed
+ * @return {string|string[]|undefined} The resulting external definition
+ */
+function defaultRequestToExternal(request) {
+    let mapping = [
+        'lodash' => 'lodash',
+        'lodash-es' => 'lodash',
+        'jquery' => 'jQuery',
+        'react' => 'React',
+        'react-dom' => 'ReactDOM',
+        'react-refresh/runtime' => 'ReactRefreshRuntime'
+    ];
+
+    if ( -1 < mapping.indexOf(request)) {
+        return mapping[request];
+    }
+
+    if (request.startsWith('@wordpress')) {
+        return [
+            'wp',
+            function (request) {
+                // Other text testing/processing, like camel-case to dashes, etc
+            } 
+        ];
+    }
+}
+
+```
+
+## Use an Module from NPM to build a Project Module
+
+Consider we want to use a slider library, in this case, it's available on NPM as `@kanopi/slider` which contains a **Named Export** of `KanopiSlider`.
+
+You start by adding the library as a direct dependency (no -d), so it is included in the vendor bundler.
+
+```bash
+npm i @kanopi/slider
+```
+
+Then inside our project JavaScript module, at path `assets/src/js/modules/slider.js`, we import the slider library and export our implemented module:
+
+```javascript
+import { KanopiSlider } from '@kanopi/slider';
+
+/**
+ * Turns a set of HTML elements into a set of sliders
+ * 
+ * @param string[] element_collection
+ * 
+ * @returns KanopiSlider[]
+ */
+const ProjectSlider = (element_collection) => {
+    let options = {
+        ... some options for the project
+    };
+
+    return element_collection.forEach( (element) => {
+        // Maybe other logic 
+
+        return KanopiSlider(element, options);
+    }
+}
+
+export { ProjectSlider };
+```
+
+Then in the entry point, at `assets/src/js/index.js`, we include and call our modules:
+
+```javascript
+import { ProjectSlider } from 'modules/slider`;
+
+ProjectSlider('.element_selector');
+```

@@ -80,7 +80,7 @@ Optional settings to map externally loaded script libraries, useful if a CMS or 
 List of key/value pair which match the Package name (i.e. `'jquery'`) to the its Global/Window location (i.e. `'jQuery'` for `window.jQuery`).
 
 
-## Section: `filePatterns` 
+## <a name="file-patterns">Section</a>: `filePatterns` 
 A map of input (`entryPoints`) file locations and output file path patterns.
 
 ### Structure 
