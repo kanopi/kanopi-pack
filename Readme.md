@@ -51,3 +51,7 @@ Configuration is implemented via the Main Configuration File, with Preferred loc
 - [Configuration](./documentation/configuration.md)
 - [ESLint Support](./documentation/eslint.md)
 - [Extending Kanopi Pack](./documentation/extending.md)
+
+## Example Configurations
+
+- [Base without TypeScript](./examples/base-no-typescript/)

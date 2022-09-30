@@ -2,6 +2,13 @@
 
 ([back to Readme](../Readme.md))
 
+* [Development Server](#development-server)
+* [Static Asset (Images, Icons, etc) Management](#static-asset-images-icons-etc-management)
+* [Asset Minification](#asset-minification)
+* [Cache Busting](#cache-busting)
+* [Module Optimization and Managing Third-Party Libraries](#module-optimization-and-managing-third-party-libraries)
+* [Linting](#linting)
+
 ## Development Server
 
 The development side of the bundler runs as a server, and automatically reloads the changed parts of styles and supporting scripts/applications through a process called hot-module reload (HMR). The configuration offers multiple options to change the IP and Port of the development server, along with the ability to listen for proxied requests when include inside a container based solution.  
@@ -10,7 +17,7 @@ The development side of the bundler runs as a server, and automatically reloads 
 
 The Development Server solution is different than some other similar middleware based solutions, or full application frameworks which fully control the whole page and therefore included scripts and styles. Any Kanopi Pack based project needs to reference the Development and Production assets at a different set of URLs, typically a different hostname with the same directory structure, for instance `https://0.0.0.0:4400/assets/dist/*` versus `https://my.site/assets/dist/*`. [Kanopi Pack Asset Loader](https://github.com/kanopi/kanopi-pack-asset-loader) is available as a PHP based library to coordinate this and offers a full integration with WordPress. 
 
-## Static Asset Management
+## Static Asset (Images, Icons, etc) Management
 
 Any images, icons, etc. which are bundled as part of the final package can be included in a subdirectory, `/static/` of the asset root folder, and are automatically copied into the distributed packages directory structure.
 
@@ -37,3 +44,11 @@ ESLint, for scripts, and StyleLint, for styles, are both included and enabled by
 StyleLint provides a [default configuration](../configuration/tools/stylelint.config.js), which extends the [SMACSS rule set](https://github.com/cahamilton/stylelint-config-property-sort-order-smacss). StyleLint configuration and management are well documented on their own [site](https://stylelint.io/).
 
 ESLint configuration is intended to exist in a project directory and be overridden as needed in subdirectories. There is no default configuration included, it is expected you place a configuration in your repository, more details are [here](eslint.md).
+
+## TypeScript
+
+Kanopi Pack provides **optional** support for TypeScript. TypeScript can be a large step for a project or organization, though can provide better long term maintenance and better code quality when used. Given this duality, it is implemented optionally.  
+
+## React Templates
+
+Kanopi Pack provides support for React JSX style templates, given the project started initially to support bundling for WordPress driven sites, and provides the infrastructure to build one of more Gutenberg blocks within the tool. This feature is opt-in, you can enable support in your [configuration](./configuration.md#section-scripts)
