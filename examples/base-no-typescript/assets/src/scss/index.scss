@@ -8,11 +8,6 @@
 // By default, {containing_directory}/assets/dist/css/ 
 $asset_root: '../' !default;
 
-// To use local assets dynamically in the bundle, reference them using the $asset_root directory
-:root {
-    --my-icon-menu-svg: url($asset_root + 'static/images/menu.svg')
-}
-
 html,
 body {
     color: #333;
@@ -24,4 +19,5 @@ h1 {
     font-size: 1.3rem;
 }
 
-@use 'menu/toggle' as *;
+@use 'root_variables' with ($root_path: $asset_root);
+@use 'menu/toggle';

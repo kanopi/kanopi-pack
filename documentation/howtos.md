@@ -9,7 +9,7 @@
 - [Add a New NPM Module to a Project Module](#add-a-new-npm-module-to-a-project-module)
 - [Use CMS or System Provided JavaScript Libraries](#use-cms-or-system-provided-javascript-libraries)
 - [Configure Cache Busting within Kanopi Pack](#configure-cache-busting-within-kanopi-pack)
-- [Use Static Assets from the Build System](#use-static-assets-from-the-build-system)
+- [Use Images, Icons, etc. with Kanopi Pack](#use-images-icons-etc-with-kanopi-pack)
 
 ## Implement Kanopi Pack for an Existing Project
 
@@ -220,6 +220,56 @@ You will then find a file in the output directory, by default `assets/dist/webpa
 ```
 
 
-## Use Static Assets from the Build System
+## Use Images, Icons, etc. with Kanopi Pack
 
-Placeholder
+The bundler provides a dynamic SCSS variable named `$asset_root`, injected into every entry point which supports SCSS, and matches the root of the current environment, Development or Production.
+
+As an example, since `@use` statements are recommended via Dart SASS, you either need to pass this variable down to child SCSS files, or use CSS variables (recommended). 
+
+Take, for example, including icons in a stylesheet, directly from entry point file, `assets/src/scss/index.scss`:
+
+```scss
+$asset_root: '../' !default;
+$static_image_path: $asset_root + 'static/images/';
+
+:root {
+	--my-icon-menu-svg: url('#{static_image_path}menu.svg');
+}
+
+@use 'components/menu';
+```
+
+In other files, for instance the menu component, you can use standard CSS variable references:
+
+```scss
+.menu {
+    .trigger {
+        &:before {
+            // ... other styles
+            background: var(--my-icon-menu-svg);
+        }
+    }
+}
+```
+
+An alternative approach, particularly if managing multiple images and colors, is to segment these `:root` styles into a separate SCSS file. Refactoring the example above, with an additional `@use` statement:
+
+
+```scss
+$asset_root: '../' !default;
+
+@use 'root_variables' with ($root_path: $asset_path);
+@use 'components/menu' as *;
+```
+
+Please note the assignment `$root_path: $asset_root` is passing the asset path into the other SCSS module, where we chose the name `$root_path` as a variable with default value in the module. The `asset/src/scss/root_variables.scss` file is then of the form:
+
+```scss
+$root_path: '../' !default;
+$static_image_path: $root_path + 'static/images/';
+
+:root {
+	--my-icon-menu-svg: url('#{static_image_path}menu.svg');
+}
+```
+
