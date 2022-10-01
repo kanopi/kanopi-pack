@@ -41,6 +41,7 @@ Configure Webpack Dev Server, by default runs on `0.0.0.0:4400`, with asset list
 | `useProxy` | false | No | Boolean | Set true to enable the proxy |
 | `watchOptions` |  | No | Object | - |
 | `watchOptions.aggregateTimeout` | 600 | No | Numeric | Wait time (debounce) after a file change to process bundle changes |
+| `watchOptions.interval` | 1000 | No | Numeric | Polling interval |
 | `watchOptions.poll` | false | No | Boolean | Set true to enable file system pooling, required for use in containers |
 
 ## Section: `environment` 

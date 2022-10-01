@@ -2,12 +2,19 @@
  * Main configuration file for Kanopi's Webpack Implementation
  */
 
+/**
+ * @typedef {Object} DistributionPaths
+ * @property {string} fullPath - Full path to the distribution files
+ * @property {string} relativePath - Relative path to the distribution files
+ */
+
 const fs = require('fs');
 const path = require('path');
 const { exit } = require('process');
 const calling_project_root = process.cwd();
 const kanopi_pack_root = path.resolve(__dirname, '..', '..');
-const { read_environment_variables } = require('./modules/environment');
+const { readEnvironmentVariables } = require('./modules/environment');
+const { readDevelopmentConfiguration } = require('./modules/developmentServer');
 
 const pathResolver = {
     toCallingPackage: (pathFragment) => {
@@ -22,8 +29,6 @@ const pathResolver = {
 };
 
 const chalk = pathResolver.requirePackageModule('chalk');
-
-const hostBuilder = (host, port) => 80 !== port ? `${host}:${port}` : `${host}`;
 
 const configuration_locations = [
     pathResolver.toCallingPackage('kanopi-pack.js'),
@@ -53,66 +58,30 @@ if (!kanopiPackConfig) {
 let assets_relative_to_root = kanopiPackConfig?.paths?.assetsRelativeToRoot ?? 'assets';
 let assets = pathResolver.toCallingPackage(assets_relative_to_root);
 let distribution_path = pathResolver.toCallingPackage(path.join(assets_relative_to_root, 'dist'));
-let relative_distribution_path = path.join(assets_relative_to_root, 'dist');
 let source_path = pathResolver.toCallingPackage(path.join(assets_relative_to_root, 'src'));
 let path_aliases = kanopiPackConfig?.paths?.aliases ?? { '@': source_path };
-
-let dev_server_allowed_hosts = (kanopiPackConfig?.devServer?.allowedHosts ?? []).concat([
-    '.localhost',
-    'localhost',
-    '.docksal',
-    '.test',
-    '127.0.0.1'
-]);
-let dev_server_host = kanopiPackConfig?.devServer?.host ?? '0.0.0.0';
-let dev_server_port = parseInt(kanopiPackConfig?.devServer?.port ?? 4400);
-let dev_server_sock_host = kanopiPackConfig?.devServer?.sockHost ?? '';;
-let dev_server_sock_port = parseInt(kanopiPackConfig?.devServer?.sockPort ?? 80);
-let dev_server_use_proxy = kanopiPackConfig?.devServer?.useProxy ?? false;
-let dev_server_use_ssl_proxy = kanopiPackConfig?.devServer?.useSslProxy ?? false;
-let dev_server_local_url = hostBuilder(dev_server_host, dev_server_port);
-let dev_server_url = dev_server_use_proxy ? hostBuilder(dev_server_sock_host, dev_server_sock_port) : dev_server_local_url;
-let dev_server_local_path = `http://${dev_server_local_url}/${relative_distribution_path}/`;
-let dev_server_public_path = dev_server_use_ssl_proxy
-    ? `https://${dev_server_url}/${relative_distribution_path}/`
-    : `http://${dev_server_url}/${relative_distribution_path}/`;
-
-let dev_server_configuration = {
-    allowedHosts: dev_server_allowed_hosts,
-    devMiddleware: {
-        publicPath: dev_server_public_path,
-    },
-    host: dev_server_host,
-    port: dev_server_port,
-    static: {
-        directory: distribution_path,
-    },
-    watchFiles: {
-        options: {
-            usePolling: kanopiPackConfig?.devServer?.watchOptions?.poll ?? false
-        }
-    }
-};
 
 let externalScripts = kanopiPackConfig?.externals ?? { jquery: 'jQuery' };
 let additionalResolveExtensions = kanopiPackConfig?.scripts?.additionalResolveExtensions ?? '';
 let typescript_filetype_patterns = kanopiPackConfig?.scripts?.additionalTypescriptFileTypes ?? [];
 
-if (dev_server_use_proxy) {
-    dev_server_configuration = {
-        ...dev_server_configuration,
-        client: {
-            webSocketURL: {
-                hostname: dev_server_sock_host,
-                port: dev_server_sock_port
-            }
-        }
+const {
+    configuration: development_configuration,
+    paths: {
+        local: devServerLocalPath,
+        public: devServerPublicPath
     }
-}
+} = readDevelopmentConfiguration(
+    kanopiPackConfig?.devServer ?? {},
+    {
+        fullPath: distribution_path,
+        relativePath: path.join(assets_relative_to_root, 'dist')
+    }
+);
 
 module.exports = {
-    devServer: dev_server_configuration,
-    environment: read_environment_variables(kanopiPackConfig?.environment ?? {}),
+    devServer: development_configuration,
+    environment: readEnvironmentVariables(kanopiPackConfig?.environment ?? {}),
     externals: externalScripts,
     filePatterns: {
         cssOutputPattern: kanopiPackConfig?.filePatterns?.cssOutputPath ?? 'css/[name].css',
@@ -130,8 +99,8 @@ module.exports = {
         aliases: path_aliases,
         assets: assets,
         assetsRelativeToRoot: assets_relative_to_root,
-        devServerLocal: dev_server_local_path,
-        devServerPublic: dev_server_public_path,
+        devServerLocal: devServerLocalPath,
+        devServerPublic: devServerPublicPath,
         distribution: distribution_path,
         node: pathResolver.toCallingPackage('node_modules'),
         source: source_path
@@ -152,5 +121,6 @@ module.exports = {
         styleLintConfigBaseDir: kanopiPackConfig?.styles?.styleLintConfigBaseDir ?? pathResolver.toKanopiPack(''),
         styleLintConfigFile: kanopiPackConfig?.styles?.styleLintConfigFile ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', 'stylelint.config.js')),
         styleLintIgnorePath: kanopiPackConfig?.styles?.styleLintIgnorePath ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintignore'))
-    }
+    },
+    watchOptions: kanopiPackConfig?.devServer?.watchOptions ?? {}
 }

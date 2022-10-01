@@ -7,8 +7,20 @@
 module.exports = (configuration) => {
   const {
     devServer: devServerSettings,
-    paths: { devServerPublic }
+    paths: { devServerPublic },
+    watchOptions: {
+      aggregateTimeout = 600,
+      interval = 1000,
+      poll = false
+    }
   } = configuration;
+
+  const watchOptions = true === poll
+    ? {
+      aggregateTimeout: aggregateTimeout,
+      poll: interval
+    }
+    : {}
 
   return {
     output: {
@@ -35,6 +47,7 @@ module.exports = (configuration) => {
       hot: 'only',
       liveReload: false,
       setupExitSignals: true
-    }
+    },
+    watchOptions: watchOptions
   };
 }
