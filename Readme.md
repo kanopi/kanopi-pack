@@ -1,5 +1,17 @@
 # Kanopi Pack - Webpack Orchestration
 
+## Documentation Reference
+
+- [Configuration](./documentation/configuration.md)
+- [ESLint Support](./documentation/eslint.md)
+- [Extending Kanopi Pack](./documentation/extending.md)
+- [Features](./documentation/features.md)
+- [How To's](./documentation/howtos.md)
+
+## Example Configurations
+
+- [Base without TypeScript](./examples/base-no-typescript/)
+
 ## Why Kanopi Pack?
 
 The main goals of Kanopi Pack are the following:
@@ -44,14 +56,3 @@ npm i @kanopi/pack
 ### Configuration
 
 Configuration is implemented via the Main Configuration File, with Preferred location and Section notes detailed [here](./documentation/configuration.md). The only required configuration section is a set of [Entry Points](./documentation/configuration.md#entry-points).
-
-
-## Documentation Reference
-
-- [Configuration](./documentation/configuration.md)
-- [ESLint Support](./documentation/eslint.md)
-- [Extending Kanopi Pack](./documentation/extending.md)
-
-## Example Configurations
-
-- [Base without TypeScript](./examples/base-no-typescript/)

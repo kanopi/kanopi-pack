@@ -4,12 +4,86 @@
 
 ## Table of contents
 
+- [Add a new Script or Style File](#add-a-new-script-or-style-file)
 - [Implement Kanopi Pack for an Existing Project](#implement-kanopi-pack-for-an-existing-project)
 - [Make Existing JavaScript Modular](#make-existing-javascript-modular)
 - [Add a New NPM Module to a Project Module](#add-a-new-npm-module-to-a-project-module)
 - [Use CMS or System Provided JavaScript Libraries](#use-cms-or-system-provided-javascript-libraries)
 - [Configure Cache Busting within Kanopi Pack](#configure-cache-busting-within-kanopi-pack)
 - [Use Images, Icons, etc. with Kanopi Pack](#use-images-icons-etc-with-kanopi-pack)
+
+## Add a new Script or Style File
+
+Let us say you want to add a separate Script and/or Style file for a specific set of pages, like you have a Songs section of your site which uses separate functionality and styling than the rest of your site.
+
+Whenever you add a new Script or Style, you are adding a new **Entry Point** to the Kanopi Pack configuration. If you are adding both a script and style, you will add two (2) new entry points, one for each.
+
+### Before adding Script and Style
+
+For the Book example, assume you start with the following [File Patterns](configuration.md#section-filepatterns) section of `kanopi-pack.js`:
+
+```
+module.exports = {
+    //... other configuration ...
+    "filePatterns": {
+        "cssOutputPath": "css/[name].css",
+        "entryPoints": {
+            "theme": "./assets/src/scss/theme/index.scss",
+            "theme-app": "./assets/src/js/theme/index.js"
+        },
+        "jsOutputPath": "js/[name].js"
+    },
+    //... other configuration ...
+}
+```
+
+For reference, the output files will include:
+
+```
+├── assets
+│ ├── dist
+│ ├── ├── css
+│ ├── ├── ├── theme.css
+│ ├── ├── js
+│ ├── ├── ├── theme-app.js
+```
+
+### After adding Script and Style
+
+We then add the two (2) entry points, with distinct names, to the **"entryPoints"** key of **"filePatterns"**:
+
+```
+module.exports = {
+    //... other configuration ...
+    "filePatterns": {
+        "cssOutputPath": "css/[name].css",
+        "entryPoints": {
+            "song": "./assets/src/scss/song/index.scss",
+            "song-app": "./assets/src/js/song/index.js",
+            "theme": "./assets/src/scss/theme/index.scss",
+            "theme-app": "./assets/src/js/theme/index.js"
+        },
+        "jsOutputPath": "js/[name].js"
+    },
+    //... other configuration ...
+}
+```
+
+Now, the output directory will include the files:
+
+```
+├── assets
+│ ├── dist
+│ ├── ├── css
+│ ├── ├── ├── song.css
+│ ├── ├── ├── theme.css
+│ ├── ├── js
+│ ├── ├── ├── song-app.js
+│ ├── ├── ├── theme-app.js
+```
+
+The new files must still be registered in the CMS or HTML templates you are using, which is outside of the scope of this tool. If you are using WordPress, the [Kanopi Pack Asset Loader](https://github.com/kanopi/kanopi-pack-asset-loader/) is available to help with registration.
+
 
 ## Implement Kanopi Pack for an Existing Project
 
