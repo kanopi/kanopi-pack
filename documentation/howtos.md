@@ -4,15 +4,61 @@
 
 ## Table of contents
 
-- [Add a new Script or Style File](#add-a-new-script-or-style-file)
+- [Add a New NPM Module to a Project Module](#add-a-new-npm-module-to-a-project-module)
+- [Add a New Script or Style File](#add-a-new-script-or-style-file)
+- [Configure Cache Busting within Kanopi Pack](#configure-cache-busting-within-kanopi-pack)
 - [Implement Kanopi Pack for an Existing Project](#implement-kanopi-pack-for-an-existing-project)
 - [Make Existing JavaScript Modular](#make-existing-javascript-modular)
-- [Add a New NPM Module to a Project Module](#add-a-new-npm-module-to-a-project-module)
 - [Use CMS or System Provided JavaScript Libraries](#use-cms-or-system-provided-javascript-libraries)
-- [Configure Cache Busting within Kanopi Pack](#configure-cache-busting-within-kanopi-pack)
 - [Use Images, Icons, etc. with Kanopi Pack](#use-images-icons-etc-with-kanopi-pack)
 
-## Add a new Script or Style File
+## Add a New NPM Module to a Project Module
+
+Consider we want to use a slider library, in this case, it's available on NPM as `@kanopi/slider` which contains a **Named Export** of `KanopiSlider`.
+
+You start by adding the library as a direct dependency (no -d), so it is included in the vendor bundler.
+
+```bash
+npm i @kanopi/slider
+```
+
+Then inside our project JavaScript module, at path `assets/src/js/modules/slider.js`, we import the slider library and export our implemented module:
+
+```javascript
+import { KanopiSlider } from '@kanopi/slider';
+
+/**
+ * Turns a set of HTML elements into a set of sliders
+ * 
+ * @param string[] element_collection
+ * 
+ * @returns KanopiSlider[]
+ */
+const ProjectSlider = (element_collection) => {
+    let options = {
+        ... some options for the project
+    };
+
+    return element_collection.forEach( (element) => {
+        // Maybe other logic 
+
+        return KanopiSlider(element, options);
+    }
+}
+
+export { ProjectSlider };
+```
+
+Then in the entry point, at `assets/src/js/index.js`, we include and call our modules:
+
+```javascript
+import { ProjectSlider } from 'modules/slider`;
+
+ProjectSlider('.element_selector');
+```
+
+
+## Add a New Script or Style File
 
 Let us say you want to add a separate Script and/or Style file for a specific set of pages, like you have a Songs section of your site which uses separate functionality and styling than the rest of your site.
 
@@ -83,6 +129,48 @@ Now, the output directory will include the files:
 ```
 
 The new files must still be registered in the CMS or HTML templates you are using, which is outside of the scope of this tool. If you are using WordPress, the [Kanopi Pack Asset Loader](https://github.com/kanopi/kanopi-pack-asset-loader/) is available to help with registration.
+
+
+
+## Configure Cache Busting within Kanopi Pack
+
+In order to enable cache busting within Kanopi Pack, you need to tell the Kanopi Pack configuration to output file names with hashes.
+
+Modify the kanopi-pack.js file like the following:
+
+```javascript
+modules.export = {
+    // ... rest of file
+    "filePatterns": {
+        "cssOutputPath": "css/[name].[hash].css",
+        "entryPoints": {
+            "legacy": "./assets/src/js/legacy.js",
+            "theme": "./assets/src/scss/index.scss"
+        },
+        "jsOutputPath": "js/[name].[hash].js"
+    }
+}
+```
+
+You will then find a file in the output directory, by default `assets/dist/webpack-assets.json`, containing mappings like this:
+
+```json
+{
+  "legacy": {
+    "js": "js/legacy.1080064923bd38698545.js"
+  },
+  "theme": {
+    "css": "css/theme.1080064923bd38698545.css",
+    "js": "js/theme.1080064923bd38698545.js"
+  },
+  "runtime": {
+    "js": "js/runtime.1080064923bd38698545.js"
+  },
+  "vendor": {
+    "js": "js/vendor.1080064923bd38698545.js"
+  }
+}
+```
 
 
 ## Implement Kanopi Pack for an Existing Project
@@ -208,90 +296,6 @@ function defaultRequestToExternal(request) {
 ```
 
 
-## Add a New NPM Module to a Project Module
-
-Consider we want to use a slider library, in this case, it's available on NPM as `@kanopi/slider` which contains a **Named Export** of `KanopiSlider`.
-
-You start by adding the library as a direct dependency (no -d), so it is included in the vendor bundler.
-
-```bash
-npm i @kanopi/slider
-```
-
-Then inside our project JavaScript module, at path `assets/src/js/modules/slider.js`, we import the slider library and export our implemented module:
-
-```javascript
-import { KanopiSlider } from '@kanopi/slider';
-
-/**
- * Turns a set of HTML elements into a set of sliders
- * 
- * @param string[] element_collection
- * 
- * @returns KanopiSlider[]
- */
-const ProjectSlider = (element_collection) => {
-    let options = {
-        ... some options for the project
-    };
-
-    return element_collection.forEach( (element) => {
-        // Maybe other logic 
-
-        return KanopiSlider(element, options);
-    }
-}
-
-export { ProjectSlider };
-```
-
-Then in the entry point, at `assets/src/js/index.js`, we include and call our modules:
-
-```javascript
-import { ProjectSlider } from 'modules/slider`;
-
-ProjectSlider('.element_selector');
-```
-
-## Configure Cache Busting within Kanopi Pack
-
-In order to enable cache busting within Kanopi Pack, you need to tell the Kanopi Pack configuration to output file names with hashes.
-
-Modify the kanopi-pack.js file like the following:
-
-```javascript
-modules.export = {
-    // ... rest of file
-    "filePatterns": {
-        "cssOutputPath": "css/[name].[hash].css",
-        "entryPoints": {
-            "legacy": "./assets/src/js/legacy.js",
-            "theme": "./assets/src/scss/index.scss"
-        },
-        "jsOutputPath": "js/[name].[hash].js"
-    }
-}
-```
-
-You will then find a file in the output directory, by default `assets/dist/webpack-assets.json`, containing mappings like this:
-
-```json
-{
-  "legacy": {
-    "js": "js/legacy.1080064923bd38698545.js"
-  },
-  "theme": {
-    "css": "css/theme.1080064923bd38698545.css",
-    "js": "js/theme.1080064923bd38698545.js"
-  },
-  "runtime": {
-    "js": "js/runtime.1080064923bd38698545.js"
-  },
-  "vendor": {
-    "js": "js/vendor.1080064923bd38698545.js"
-  }
-}
-```
 
 
 ## Use Images, Icons, etc. with Kanopi Pack

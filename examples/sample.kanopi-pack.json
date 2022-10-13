@@ -2,7 +2,7 @@
     "devServer": {
         "allowedHosts": [],
         "host": "0.0.0.0",
-        "port": 80,
+        "port": 4400,
         "sockHost": "",
         "sockPort": 80,
         "useProxy": false,
@@ -10,6 +10,13 @@
             "aggregateTimeout": 600,
             "poll": false
         }
+    },
+    "environment": {
+        "dotenvEnable": true,
+        "dotenvConfiguration": {}
+    },
+    "externals": {
+        "jquery": "jQuery"
     },
     "filePatterns": {
         "cssOutputPath": "css/[name].css",
@@ -19,11 +26,27 @@
         },
         "jsOutputPath": "js/[name].js"
     },
+    "minification": {
+        "enable": true,
+        "options": {
+            "terserOptions": {
+                "mangle": true
+            }
+        }
+    },
     "paths": {
+        "aliases": {
+            "@": "./assets/src/"
+        },
         "assetsRelativeToRoot": "assets"
     },
     "scripts": {
-        "additionalTypescriptFileTypes": []
+        "additionalResolveExtensions": "",
+        "additionalTypescriptFileTypes": [],
+        "esLintAutoFix": true,
+        "esLintDisable": false,
+        "esLintFileTypes": "js,jsx,ts,tsx",
+        "useJsxSyntax": false
     },
     "sourceMaps": false,
     "styles": {

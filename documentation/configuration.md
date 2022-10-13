@@ -4,11 +4,21 @@
 
 ## Configuration File Location
 
-A full list of available configuration options along with default values or direction are included in `sample.kanopi-pack.json`. @kanopi/pack searches your project directory for a JSON file named `kanopi-pack.json` or a CommonJS file called `kanopi-pack.js`, in either the root or `assets/configuration` folder.
+A full list of available configuration options along with default values or direction are included in [`sample.kanopi-pack.json`](../examples/sample.kanopi-pack.json). @kanopi/pack searches your project directory for a JSON file named `kanopi-pack.json` or a CommonJS file called `kanopi-pack.js`, in either the root or `assets/configuration` folder. See a basic example of this in the [Base No TypeScript](../examples/base-no-typescript/) example.
 
 ## Configuration File Sections
 
 The following sections allow customization with listed `defaults` and `optional\required` status.
+
+* [`devServer`](#section-devserver)
+* [`environment`](#section-environment)
+* [`externals`](#section-externals)
+* [`filePatterns`](#section-filepatterns)
+* [`minification`](#section-minification)
+* [`paths`](#section-paths)
+* [`scripts`](#section-scripts)
+* [`sourcemaps`](#section-sourcemaps)
+* [`styles`](#section-styles)
 
 ## Section: `devServer`
 Configure Webpack Dev Server, by default runs on `0.0.0.0:4400`, with asset listing at `http://0.0.0.0:4400/webpack-dev-server`.
@@ -61,7 +71,7 @@ Optional settings configure environment variables through Dotenv.
 
 | Setting | Default | Required? | Type | Usage |
 |---------|---------|:---------:|------|-------|
-| `dotenvConfiguration` | {} | No | Object | Configuration for Dotenv |
+| `dotenvConfiguration` | {} | No | Object | Configuration for Dotenv, options [here](https://github.com/mrsteele/dotenv-webpack#properties) |
 | `dotenvEnable` | true | No | Boolean | Set true to enable Dotenv |
 
 
@@ -124,7 +134,7 @@ Configure minification of assets using Terser.
 | Setting | Default | Required? | Type | Usage |
 |---------|---------|:---------:|------|-------|
 | `enable` | true | No | Boolean | Enable/disable minification of assets |
-| `options` | {} | No | Object |  Terser plugin options, use the `terserOptions` key for Terser options |
+| `options` | {} | No | Object |  Use the `terserOptions` sub-key for Terser options, outlined [here](https://github.com/terser/terser#minify-options) |
 
 
 ## Section: `paths` 
@@ -134,7 +144,7 @@ Settings for the asset structure, by default, all source assets are in the `asse
 
     "paths": {
         "aliases": {
-            "@": './path/to/source_files/'
+            "@": "./path/to/source_files/"
         },
         "assetsRelativeToRoot": "assets"
     }
@@ -154,11 +164,11 @@ JavaScript and TypeScript related configuration.
 ### Structure 
 
     "scripts": {
-        "additionalResolveExtensions": '',
+        "additionalResolveExtensions": "",
         "additionalTypescriptFileTypes": [],
         "esLintAutoFix": true,
         "esLintDisable": false,
-        "esLintFileTypes": 'js,jsx,ts,tsx',
+        "esLintFileTypes": "js,jsx,ts,tsx",
         "useJsxSyntax": false
     }
 
@@ -192,6 +202,7 @@ Style configuration options, especially related to StyleLint. By default, it use
         "styleLintAutoFix": true,
         "styleLintConfigBaseDir": null,
         "styleLintConfigFile": null
+        "styleLintIgnorePath": null
     }
 
 
