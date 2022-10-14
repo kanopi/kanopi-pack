@@ -55,6 +55,7 @@
     "postcss": "^8.4.18",
     "postcss-loader": "^7.0.1",
     "postcss-preset-env": "^7.8.2",
+    "postcss-scss": "^4.0.5",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
     "style-loader": "^3.3.1",
