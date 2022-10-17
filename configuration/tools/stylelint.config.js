@@ -1,4 +1,5 @@
 module.exports = {
+  "customSyntax": "postcss-scss",
   "extends": "stylelint-config-property-sort-order-smacss",
   "rules": {
     "at-rule-disallowed-list": ["debug"],
@@ -8,7 +9,7 @@ module.exports = {
     "block-opening-brace-space-before": "always",
     "color-hex-case": "lower",
     "color-hex-length": "long",
-    "color-named": ["never", { ignore: "inside-function" }], 
+    "color-named": ["never", { ignore: "inside-function" }],
     "color-no-invalid-hex": true,
     "declaration-bang-space-after": "never",
     "declaration-bang-space-before": "always",
