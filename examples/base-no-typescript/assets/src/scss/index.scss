@@ -1,0 +1,23 @@
+// This can be comprised of partials or a direct copy/paste of CSS without refactoring
+
+// This is a Kanopi Pack specific variable available to every CSS supporting entry point
+// When using Webpack Dev Server, this variable will be set to the root distribution folder of the dev server
+// By default, http://0.0.0.0:4044/assets/dist/
+//
+// For the Production bundle, the "asset root" is relative to the output CSS file 
+// By default, {containing_directory}/assets/dist/css/ 
+$asset_root: '../' !default;
+
+html,
+body {
+    color: #333;
+    font-size: 16px;
+}
+
+h1 {
+    color: #356728;
+    font-size: 1.3rem;
+}
+
+@use 'root_variables' with ($root_path: $asset_root);
+@use 'menu/toggle';

@@ -1,0 +1,16 @@
+{
+  "name": "kanopi-pack-base-no-typescript",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "production": "kanopi-pack standard",
+    "development": "kanopi-pack standard development"
+  },
+  "devDependencies": {
+    "@kanopi/pack": "git+ssh://git@github.com/kanopi/kanopi-pack.git"
+  },
+  "engines": {
+    "node": ">=12 <16",
+    "npm": ">=6.14"
+  }
+}

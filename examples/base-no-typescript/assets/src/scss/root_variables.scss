@@ -1,0 +1,6 @@
+$root_path: '../' !default;
+$static_image_path: $root_path + 'static/images/';
+
+:root {
+	--my-icon-menu-svg: url('#{static_image_path}menu.svg');
+}
