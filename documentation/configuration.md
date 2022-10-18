@@ -87,7 +87,14 @@ Optional settings to map externally loaded script libraries, useful if a CMS or 
 
 ### Details
 
-List of key/value pair which match the Package name (i.e. `'jquery'`) to the its Global/Window location (i.e. `'jQuery'` for `window.jQuery`).
+List of key/value pair which match the Package name (i.e. `'jquery'`) to the its Global/Window location (i.e. `'jQuery'` for `window.jQuery`). When using the function variant, the function is of the form `function ({context, request}, callback) { ... }`, see full details [here](https://webpack.js.org/configuration/externals/#function).
+
+### Details
+
+| Setting | Default | Required? | Type | Usage |
+|---------|---------|:---------:|------|-------|
+| `externals` | {"jquery": "jQuery"} | No | Object | Function | Direct list or function which returns a set of key/value pairs of import name to global/window variable name. |
+
 
 
 ## <a name="file-patterns">Section</a>: `filePatterns` 
@@ -193,7 +200,7 @@ Production/distribution setting only, determines if these builds contain source 
 
 
 ## Section: `styles` 
-Style configuration options, especially related to StyleLint. By default, it uses the `stylelint-config-property-sort-order-smacss` order (Order package is installed) and a number of sensible rules common at Kanopi. Due to the default, configuration options are set relative to this modules path, and if you plan to install and extend a different ruleset, configure `styleLintConfigBaseDir` to the package/project root directory. Additionally, to ignore file globs, you must set a `.stylelintignore` in the package/project root directory.
+Style configuration options, especially related to StyleLint. By default, it uses the `stylelint-config-property-sort-order-smacss` order (Order package is installed) and a number of sensible rules common at Kanopi. Due to the default, configuration options are set relative to this modules path, and if you plan to install and extend a different rule set, configure `styleLintConfigBaseDir` to the package/project root directory. When extending, know that StyleLint uses CSS syntax only, by default, so you must add `"customSyntax": "postcss-scss"` to your custom configuration. Additionally, to ignore file globs, you must set a `.stylelintignore` in the package/project root directory.
 
 ### Structure 
 

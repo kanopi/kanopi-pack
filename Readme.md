@@ -7,6 +7,7 @@
 - [Extending Kanopi Pack](./documentation/extending.md)
 - [Features](./documentation/features.md)
 - [How To's](./documentation/howtos.md)
+- [Upgrading from Kanopi Pack v1 to v2](./documentation/upgrade.md)
 
 ## Example Configurations
 
