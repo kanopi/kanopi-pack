@@ -11,14 +11,14 @@ const {
 const { resolver: { requirePackageModule } } = standardEnvironment;
 
 const common = require('./common');
-const merge = requirePackageModule('webpack-merge');
+const { merge } = requirePackageModule('webpack-merge');
 
 let environment = {
   ...standardEnvironment,
   sourceMaps: true
 };
 
-module.exports = merge.smart(
+module.exports = merge(
   common(environment),
   {
     ...devServerProfile(environment),

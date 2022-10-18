@@ -4,11 +4,11 @@ const WebpackDevServer = require('webpack-dev-server');
 module.exports = async (config) => {
     try {
         const compiler = webpack(config);
-        const server = new WebpackDevServer(compiler, config.devServer);
+        const server = new WebpackDevServer(config.devServer, compiler);
 
         ['SIGINT', 'SIGTERM'].forEach(signal => {
             process.on(signal, () => {
-                server.close(() => {
+                server.stopCallback(() => {
                     process.exit(0)
                 })
             })
@@ -29,14 +29,12 @@ module.exports = async (config) => {
 
                         resolve({
                             server,
-                            url: config.paths.devServerLocal
+                            url: config.devServer?.devMiddleware?.publicPath ?? ''
                         });
                     }
                 });
 
-            server.listen(
-                config.devServer.port,
-                config.devServer.host,
+            server.startCallback(
                 (error) => {
                     if (error) {
                         reject(error);

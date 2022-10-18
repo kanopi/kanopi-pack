@@ -7,6 +7,7 @@
 - [Extending Kanopi Pack](./documentation/extending.md)
 - [Features](./documentation/features.md)
 - [How To's](./documentation/howtos.md)
+- [Upgrading from Kanopi Pack v1 to v2](./documentation/upgrade.md)
 
 ## Example Configurations
 
@@ -22,10 +23,7 @@ The main goals of Kanopi Pack are the following:
 * Provide consistent Static Asset (JS/CSS/Images/etc) bundles across projects, with built-in incremental reloads for development environments
 * Support legacy JS/CSS code while incrementally adopting newer style applications, optionally using technologies like ES Modules and TypeScript or frameworks/libraries like React and Vue
 
-
 ## When Kanopi Pack?
-
-Here are a few questions, if you answer yes to any of them, Kanopi Pack is worth your consideration.
 
 * Are you using Grunt, Gulp, some other older technology, or even nothing to manage your static assets?
 * Do you want to incrementally add a front-end application, written in React or Vue, alongside your existing site JS code?

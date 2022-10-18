@@ -48,7 +48,7 @@ module.exports = (environment) => {
         }
       ]
     }),
-    new webpack.HashedModuleIdsPlugin({
+    new webpack.ids.HashedModuleIdsPlugin({
       context: sourcePath,
       hashFunction: 'sha256',
       hashDigest: 'hex',
