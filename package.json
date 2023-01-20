@@ -1,7 +1,7 @@
 {
   "name": "@kanopi/pack",
   "version": "2.0.0",
-  "description": "Pre-packaged Webpack 4 configuration with extendable configuration to coordinate loaders and rules for common web stacks",
+  "description": "Pre-packaged Webpack 5 configuration with extendable configuration to coordinate loaders and rules for common web stacks",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,6 +15,8 @@
     "SCSS",
     "Javascript",
     "Typescript",
+    "React",
+    "Gutenberg",
     "Vue",
     "Automation"
   ],
@@ -25,8 +27,8 @@
   },
   "homepage": "https://github.com/kanopi/kanopi-pack#readme",
   "engines": {
-    "node": ">=12",
-    "npm": ">=6.14"
+    "node": ">=14",
+    "npm": ">=6"
   },
   "dependencies": {
     "@babel/core": "^7.19.3",
@@ -37,7 +39,7 @@
     "@typescript-eslint/parser": "^5.40.1",
     "assets-webpack-plugin": "^7.1.1",
     "babel-loader": "^8.2.5",
-    "chalk": "^4.1.2",
+    "chalk": "4.1.2",
     "clean-webpack-plugin": "^4.0.0",
     "commander": "^9.4.1",
     "copy-webpack-plugin": "^11.0.0",
