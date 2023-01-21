@@ -54,3 +54,9 @@ npm i @kanopi/pack
 ### Configuration
 
 Configuration is implemented via the Main Configuration File, with Preferred location and Section notes detailed [here](./documentation/configuration.md). The only required configuration section is a set of [Entry Points](./documentation/configuration.md#entry-points).
+
+## Node & Package Compatibility
+
+- Node 16.x minimum is required for v2.x, if you need lower use v1.x
+- Kanopi Pack React and Vue versions both track with Kanopi Pack, use v1.x and v2.x accordingly
+- Chalk v5.x uses ESM which is not compatible with the rest of the Node modules used here, it is locked at v4.x for now.
