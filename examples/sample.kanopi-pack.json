@@ -12,8 +12,7 @@
         }
     },
     "environment": {
-        "dotenvEnable": true,
-        "dotenvConfiguration": {}
+        "dotenvEnable": false
     },
     "externals": {
         "jquery": "jQuery"
