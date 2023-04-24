@@ -22,5 +22,7 @@ workflows:
             context:
               - kanopi-code
             filters:
+              branches:
+                ignore: /.*/
               tags:
                 only: /[0-9]+(\.[0-9]+)*/
