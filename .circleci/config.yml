@@ -13,7 +13,8 @@ jobs:
             name: Publish to NPM
             command: |
               npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-              npm publish --tag $CIRCLE_TAG
+              npm version $CIRCLE_TAG
+              npm publish --access public
 
 workflows:
   tagged-build:
