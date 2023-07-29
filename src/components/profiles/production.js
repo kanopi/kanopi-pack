@@ -11,19 +11,18 @@ module.exports = (environment) => {
     resolver: { requirePackageModule }
   } = environment;
 
-  const MiniCSSExtractPlugin = requirePackageModule('mini-css-extract-plugin');
+  const CSSMinimizerPlugin = requirePackageModule('css-minimizer-webpack-plugin');
   const TerserWebpackPlugin = requirePackageModule('terser-webpack-plugin');
 
-  const optimization = {
-    minimize: enableMinification,
-    minimizer: [
-      new MiniCSSExtractPlugin()
-    ]
-  }
-
-  if (enableMinification) {
-    optimization.minimizer.push(new TerserWebpackPlugin(minificationOptions));
-  }
+  const optimization = enableMinification
+    ? {
+      minimize: true,
+      minimizer: [
+        new CSSMinimizerPlugin(),
+        new TerserWebpackPlugin(minificationOptions)
+      ]
+    }
+    : {};
 
   return {
     mode: 'production',
