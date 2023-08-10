@@ -17,15 +17,20 @@ module.exports = (environment) => {
    * When `devHeadSelectorInsertBefore` is defined add an `insert` action to target style tag placement
    *  - This function assigned to `insert` is executed in the user browser
    *  - If the element is not found, the function falls back to the default placements, bottom of the `head` tag
+   *  - In order for this to work, the selector is passed to the browser as an attribute `devTargetBefore` on the style block
    */
   if ('undefined' !== typeof devHeadSelectorInsertBefore) {
     loaderOptions = {
       insert: function (element) {
+        var targetAttribute = element.getAttribute('devTargetBefore');
         var head = document.querySelector('head');
-        var target = null !== head ? head.querySelector(devHeadSelectorInsertBefore) : null;
+        var target = null !== head && null !== targetAttribute ? head.querySelector(targetAttribute) : null;
 
         null !== target ? head.insertBefore(element, target) : head.appendChild(element);
       },
+      attributes: {
+        devTargetBefore: devHeadSelectorInsertBefore
+      }
     }
   }
 
