@@ -1,6 +1,6 @@
 const {
   components: {
-    loaders: { styles: StyleLoaders },
+    loaders: { styles: StyleLoaders, devStyleLoader },
     plugins: { development: devServerPlugins },
     profiles: { development: devServerProfile },
     rules: { file: FileRules, typescript: TypescriptRules }
@@ -29,7 +29,7 @@ module.exports = merge(
         {
           test: /\.(css|scss|sass)$/,
           use: [
-            'style-loader',
+            devStyleLoader(environment),
             ...StyleLoaders(environment, `$asset_root: '${environment.paths.devServerPublic}';`)
           ]
         }

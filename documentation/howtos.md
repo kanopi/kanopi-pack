@@ -8,6 +8,7 @@
 - [Add a New Script or Style File](#add-a-new-script-or-style-file)
 - [Configure Cache Busting within Kanopi Pack](#configure-cache-busting-within-kanopi-pack)
 - [Implement Kanopi Pack for an Existing Project](#implement-kanopi-pack-for-an-existing-project)
+- [My CMS custom CSS does not work with Kanopi Pack](#my-cms-custom-css-does-not-work-with-kanopi-pack)
 - [Make Existing JavaScript Modular](#make-existing-javascript-modular)
 - [Use CMS or System Provided JavaScript Libraries](#use-cms-or-system-provided-javascript-libraries)
 - [Use Images, Icons, etc. with Kanopi Pack](#use-images-icons-etc-with-kanopi-pack)
@@ -224,6 +225,25 @@ Transform this into a loadable module, which uses window/global attached version
 The important part in this segment is the format of a function which is immediate called with supplied arguments: `(function(...argument_list){})(...supplied_arguments)`.
 
 There are other, better approaches to refactoring this code, this in NOT a best practice. Use this approach to quickly make existing code function within the bundler. 
+
+
+## My CMS custom CSS does not work with Kanopi Pack
+
+In some cases, you use a CMS or other system which generates its own dynamic CSS and injects it into the `head` of the document. Production sites are generally fine since you usually control the placement of the stylesheet, and can put it before the dynamic CSS style block. Webpack Dev Server, on the other hand, loads CSS through JavaScript. These scripts place each progressive style tag at the bottom of the `head` by default.
+
+### Control Placement of the Dev Server Styles
+
+The Kanopi Pack configuration offers an option to insert the Dev Server created styles into the `head` at a given position. Consider there is a `style` block in the document `head` with an ID of `cms-custom-id`, i.e. `<style id="cms-custom-id">...</style>`. You can force Webpack Dev Server to add style blocks before the CMS custom style block, with the following configuration setting:
+
+```javascript
+modules.export = {
+    // ... rest of file
+    "styles": {
+        "devHeadSelectorInsertBefore": "#custom-css-id",
+        ... any other style settings
+    }
+}
+```
 
 
 ## Use CMS or System Provided JavaScript Libraries
