@@ -39,17 +39,17 @@ Kanopi Pack is installed via NPM anywhere in your project structure.
 
 ### Installation 
 
-Currently it is a private repository and you can add it to a project using an allowed Github account with SSH:
-
-```
-npm i git+ssh:git@github.com:kanopi/kanopi-pack.git
-```
-
-Future state, when public: 
-
 ```
 npm i @kanopi/pack
 ```
+
+If you are trying to test a given feature request, use the following command to install the test package:
+
+```
+npm i https://github.com/kanopi/kanopi-pack.git#<feature/branch-path>
+```
+
+Where `<feature/branch-path>` is replaced with the branch name, no `<>`.
 
 ### Configuration
 
