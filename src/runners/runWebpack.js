@@ -17,7 +17,7 @@ module.exports = function runWebpack(config) {
 
       if (Array.isArray(statisticsErrors) && 0 < statisticsErrors.length) {
         console.log(chalk.red('Encountered the following bundle compilation errors:'));
-        throw new statisticsErrors;
+        throw new Error(statisticsErrors);
       }
 
       console.log(chalk.green('Build success - asset listing:'));
