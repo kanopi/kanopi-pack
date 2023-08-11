@@ -13,10 +13,23 @@ module.exports = (environment, prepend_variable_data) => {
     resolver: { requirePackageModule },
   } = environment;
 
-  const PostCSSImport = requirePackageModule('postcss-import');
-  const PostCSSImportExtGlob = requirePackageModule('postcss-import-ext-glob');
-  const PostCSSPresetEnv = requirePackageModule('postcss-preset-env');
-  const PostCSSUrl = requirePackageModule('postcss-url');
+  const PostCSSPlugins = [
+    'postcss-import-ext-glob',
+    'postcss-import',
+    'postcss-url',
+    'postcss-mixins',
+    'postcss-custom-selectors',
+    'postcss-nested',
+    'postcss-custom-media',
+    'postcss-preset-env'
+  ];
+
+  let ActivePostCSSPlugins = [];
+
+  PostCSSPlugins.forEach((pluginName) => {
+    ActivePostCSSPlugins.push(requirePackageModule(pluginName));
+  });
+
   const Sass = requirePackageModule('sass');
 
   let isSourceMapsEnabled = environment?.sourceMaps ?? false;
@@ -37,10 +50,7 @@ module.exports = (environment, prepend_variable_data) => {
       options: {
         postcssOptions: {
           plugins: [
-            PostCSSImportExtGlob,
-            PostCSSImport,
-            PostCSSUrl,
-            PostCSSPresetEnv,
+            ...ActivePostCSSPlugins,
             {
               autoprefixer: { 'grid': 'autoplace' }
             }
