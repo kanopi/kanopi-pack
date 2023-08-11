@@ -8,66 +8,72 @@
  * 
  * @returns {Array} - Set of required and configured Webpack Plugins
  */
- module.exports = (environment, prepend_variable_data) => {
-    const { 
-        resolver: { requirePackageModule },
-    } = environment;
+module.exports = (environment, prepend_variable_data) => {
+  const {
+    resolver: { requirePackageModule },
+  } = environment;
 
-    const PostCSSPresetEnv = requirePackageModule('postcss-preset-env');
-    const Sass = requirePackageModule('sass');
-    
-    let isSourceMapsEnabled = environment?.sourceMaps ?? false;
-    let prependedPaths = environment?.styles?.scssIncludes ?? [];
-    let prependVariableData = prepend_variable_data ?? '';
-    let usePrependedPaths = Array.isArray(prependedPaths) && 0 < prependedPaths.length;
+  const PostCSSImport = requirePackageModule('postcss-import');
+  const PostCSSImportExtGlob = requirePackageModule('postcss-import-ext-glob');
+  const PostCSSPresetEnv = requirePackageModule('postcss-preset-env');
+  const PostCSSUrl = requirePackageModule('postcss-url');
+  const Sass = requirePackageModule('sass');
 
-    let baseRules = [
-        {
-            loader: 'css-loader',
-            options: {
-                sourceMap: isSourceMapsEnabled,
-                url: false
+  let isSourceMapsEnabled = environment?.sourceMaps ?? false;
+  let prependedPaths = environment?.styles?.scssIncludes ?? [];
+  let prependVariableData = prepend_variable_data ?? '';
+  let usePrependedPaths = Array.isArray(prependedPaths) && 0 < prependedPaths.length;
+
+  let baseRules = [
+    {
+      loader: 'css-loader',
+      options: {
+        sourceMap: isSourceMapsEnabled,
+        url: false
+      }
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        postcssOptions: {
+          plugins: [
+            PostCSSImportExtGlob,
+            PostCSSImport,
+            PostCSSUrl,
+            PostCSSPresetEnv,
+            {
+              autoprefixer: { 'grid': 'autoplace' }
             }
+          ]
         },
-        {
-            loader: 'postcss-loader',
-            options: {
-                postcssOptions: {
-                    plugins: [
-                        PostCSSPresetEnv,
-                        {
-                            autoprefixer: { 'grid': 'autoplace' }
-                        }
-                    ]
-                },
-                sourceMap: isSourceMapsEnabled
-            }
+        sourceMap: isSourceMapsEnabled
+      }
+    },
+    {
+      loader: 'sass-loader',
+      options: {
+        additionalData: prependVariableData,
+        implementation: Sass,
+        sassOptions: {
+          includePaths: [
+            environment?.paths?.node ?? ''
+          ],
+          linefeed: 'lf',
+          outputStyle: 'expanded',
         },
-        {
-            loader: 'sass-loader',
-            options: {
-                additionalData: prependVariableData,
-                implementation: Sass,
-                sassOptions: {
-                    includePaths: [
-                        environment?.paths?.node ?? ''
-                    ],
-                    linefeed: 'lf',
-                    outputStyle: 'expanded',
-                },
-                sourceMap: isSourceMapsEnabled,
-            }
-        }
-    ];
-
-    if (usePrependedPaths) {
-        baseRules.push({
-            loader: 'style-resources-loader',
-            options: {
-                patterns: prependedPaths
-            }
-        });
+        sourceMap: isSourceMapsEnabled,
+      }
     }
+  ];
 
-    return baseRules;
+  if (usePrependedPaths) {
+    baseRules.push({
+      loader: 'style-resources-loader',
+      options: {
+        patterns: prependedPaths
+      }
+    });
+  }
+
+  return baseRules;
 }
