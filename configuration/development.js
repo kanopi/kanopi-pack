@@ -30,7 +30,7 @@ module.exports = merge(
           test: /\.(css|scss|sass)$/,
           use: [
             devStyleLoader(environment),
-            ...StyleLoaders(environment, `$asset_root: '${environment.paths.devServerPublic}';`)
+            ...StyleLoaders(environment)
           ]
         }
       ]

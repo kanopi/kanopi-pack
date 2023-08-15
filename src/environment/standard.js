@@ -12,6 +12,8 @@ const kanopiPackConfig = configurationLoader.read(pathResolver);
 const assetRelativePathToRoot = kanopiPackConfig?.paths?.assetsRelativeToRoot ?? 'assets';
 const distributionPath = pathResolver.toCallingPackage(path.join(assetRelativePathToRoot, 'dist'));
 const sourcePath = pathResolver.toCallingPackage(path.join(assetRelativePathToRoot, 'src'));
+const sourceRelativePathToRoot = path.join(assetRelativePathToRoot, 'src') + '/';
+const staticAssetOutputName = kanopiPackConfig?.filePatterns?.staticAssetOutputName ?? '[name].[hash][ext][query]';
 
 const {
   configuration: developmentConfiguration,
@@ -36,7 +38,15 @@ module.exports = {
     entryPoints: kanopiPackConfig?.filePatterns?.entryPoints ?? {},
     jsOutputPattern: {
       filename: kanopiPackConfig?.filePatterns?.jsOutputPath ?? 'js/[name].js',
-      path: distributionPath
+      path: distributionPath,
+      assetModuleFilename: (pathData) => {
+        const fileRelativePath = path.dirname(pathData.filename);
+        const fileDistributionPath = fileRelativePath.startsWith(sourceRelativePathToRoot)
+          ? fileRelativePath.replace(sourceRelativePathToRoot, '')
+          : fileRelativePath.split('/').slice(2).join('/');
+
+        return path.join(fileDistributionPath, staticAssetOutputName);
+      }
     }
   },
   minification: {
@@ -65,11 +75,13 @@ module.exports = {
   sourceMaps: kanopiPackConfig?.sourceMaps ?? false,
   styles: {
     devHeadSelectorInsertBefore: kanopiPackConfig?.styles?.devHeadSelectorInsertBefore ?? undefined,
+    postCssCustomizePluginOrder: kanopiPackConfig?.styles?.postCssCustomizePluginOrder ?? undefined,
     scssIncludes: kanopiPackConfig?.styles?.scssIncludes ?? [],
     styleLintAutoFix: kanopiPackConfig?.styles?.styleLintAutoFix ?? true,
     styleLintConfigBaseDir: kanopiPackConfig?.styles?.styleLintConfigBaseDir ?? pathResolver.toKanopiPack(''),
     styleLintConfigFile: kanopiPackConfig?.styles?.styleLintConfigFile ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', 'stylelint.config.js')),
-    styleLintIgnorePath: kanopiPackConfig?.styles?.styleLintIgnorePath ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintignore'))
+    styleLintIgnorePath: kanopiPackConfig?.styles?.styleLintIgnorePath ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintignore')),
+    useSass: kanopiPackConfig?.styles?.useSass ?? true
   },
   watchOptions: kanopiPackConfig?.devServer?.watchOptions ?? {}
 }
