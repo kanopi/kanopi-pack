@@ -6,8 +6,8 @@
  */
 
 const path = require('path');
-const calling_project_root = process.cwd();
-const kanopi_pack_root = path.resolve(__dirname, '..', '..');
+const callingProjectRoot = process.cwd();
+const kanopiPackPackageRoot = path.resolve(__dirname, '..', '..');
 
 /**
  * @returns {PathResolver}
@@ -20,7 +20,7 @@ module.exports = {
    * @returns {string}
    */
   requirePackageModule: (packageName) => {
-    return require(pathResolver.toCallingPackage('node_modules/' + packageName));
+    return require(path.resolve(callingProjectRoot, 'node_modules', packageName));
   },
   /**
    * Find the current path to a file in the source/calling project for the process
@@ -29,7 +29,7 @@ module.exports = {
    * @returns {string}
    */
   toCallingPackage: (pathFragment) => {
-    return path.resolve(calling_project_root, pathFragment);
+    return path.resolve(callingProjectRoot, pathFragment);
   },
   /**
    * Find a path in the Kanopi Pack package
@@ -38,6 +38,6 @@ module.exports = {
    * @returns {string}
    */
   toKanopiPack: (pathFragment) => {
-    return path.resolve(kanopi_pack_root, pathFragment);
+    return path.resolve(kanopiPackPackageRoot, pathFragment);
   }
 };
