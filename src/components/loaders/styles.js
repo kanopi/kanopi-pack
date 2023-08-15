@@ -68,7 +68,7 @@ module.exports = (environment) => {
   ];
 
   if (useSass) {
-    baseRules.push(requirePackageModule(environment));
+    baseRules.push(require('./sass')(environment));
   }
 
   if (usePrependedPaths) {

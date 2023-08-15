@@ -1,3 +1,10 @@
+/**
+ *  Implements the SASS loader
+ * 
+ * @param {object} environment - Kanopi Pack environment (Standard Interface)
+ * 
+ * @returns {import("webpack").LoaderModule} - Webpack Loader module
+ */
 module.exports = (environment) => {
   const {
     resolver: { requirePackageModule },
