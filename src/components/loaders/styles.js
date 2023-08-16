@@ -11,11 +11,13 @@
  */
 module.exports = (environment) => {
   const {
-    resolver: { requirePackageModule },
     styles: { postCssCustomizePluginOrder: customOrder, useSass }
   } = environment;
 
-  const PostCSSPlugins = 'undefined' !== typeof (customOrder) && Array.isArray(customOrder) && 0 < customOrder.length
+  /**
+   * @var {Array<string|Array<string|Object>} PostCSSPlugins - Set of plugin names or objects with plugin name and options
+   */
+  const PostCSSPlugins = 'undefined' !== typeof (customOrder) && Array.isArray(customOrder)
     ? customOrder
     : [
       'postcss-import-ext-glob',
@@ -24,26 +26,13 @@ module.exports = (environment) => {
       'postcss-custom-selectors',
       'postcss-nested',
       'postcss-custom-media',
-      'postcss-preset-env'
-    ];
-
-  let ActivePostCSSPlugins = [];
-
-  /**
-   * Require each PostCSS plugin if they are passed as the plugin name; If an object, assume the plugin is loaded and may have options
-   */
-  PostCSSPlugins.forEach((pluginName) => {
-    let currentModule = 'string' === typeof pluginName ? requirePackageModule(pluginName) : pluginName;
-
-    'postcss-present-env' === currentModule
-      ? ActivePostCSSPlugins.push([
-        pluginName,
+      [
+        'postcss-preset-env',
         {
           autoprefixer: { 'grid': 'autoplace' }
         }
-      ])
-      : ActivePostCSSPlugins.push(requirePackageModule(pluginName));
-  });
+      ]
+    ];
 
   let isSourceMapsEnabled = environment?.sourceMaps ?? false;
   let prependedPaths = environment?.styles?.scssIncludes ?? [];
@@ -60,7 +49,7 @@ module.exports = (environment) => {
       loader: 'postcss-loader',
       options: {
         postcssOptions: {
-          plugins: ActivePostCSSPlugins
+          plugins: PostCSSPlugins
         },
         sourceMap: isSourceMapsEnabled
       }
