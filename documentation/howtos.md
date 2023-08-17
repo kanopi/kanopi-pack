@@ -317,57 +317,33 @@ function defaultRequestToExternal(request) {
 
 
 
-
 ## Use Images, Icons, etc. with Kanopi Pack
 
-The bundler provides a dynamic SCSS variable named `$asset_root`, injected into every entry point which supports SCSS, and matches the root of the current environment, Development or Production.
+Kanopi Pack takes Images, Icons, Fonts, etc it finds in your CSS or JS files and makes them part of your distributed files. By default, it enables cache busting for these files, so if you update an image and then release, the new file will be immediately used.
 
-As an example, since `@use` statements are recommended via Dart SASS, you either need to pass this variable down to child SCSS files, or use CSS variables (recommended). 
+The bundler dynamically reads any `@import` or `url()` paths in any CSS or JS used by a Kanopi Pack (Webpack) entry point. It will place the file in the distribution folder in the same directory location it existed relative to the source folder.
 
-Take, for example, including icons in a stylesheet, directly from entry point file, `assets/src/scss/index.scss`:
+**Note**: For development mode, the Dev Server uses a script `central.js` to coordinate the current file location. You must include this in Development mode if you have any of these assets.
+
+Take for example (where `@` stands for `assets/src`):
 
 ```scss
-$asset_root: '../' !default;
-$static_image_path: $asset_root + 'static/images/';
-
 :root {
-	--my-icon-menu-svg: url('#{static_image_path}menu.svg');
-}
-
-@use 'components/menu';
-```
-
-In other files, for instance the menu component, you can use standard CSS variable references:
-
-```scss
-.menu {
-    .trigger {
-        &:before {
-            // ... other styles
-            background: var(--my-icon-menu-svg);
-        }
-    }
+	--my-icon-menu-svg: url('@/static/images/menu.svg');
 }
 ```
 
-An alternative approach, particularly if managing multiple images and colors, is to segment these `:root` styles into a separate SCSS file. Refactoring the example above, with an additional `@use` statement:
+The file which is at `assets/src/static/images/menu.svg` is automatically copied to `assets/dist/static/images/menu.{fileHash}.svg`, where `{fileHash}` is a small (mostly) unique identifier created by Kanopi Pack based on the contents of the image. If you change the menu image file, it will now create `assets/dist/static/images/menu.{newFileHash}.svg` where `{newFileHash}` is the new (mostly) unique identifier. 
 
+Kanopi Pack does the internal heavy lifting to ensure every place the file is used in CSS or JS is updated to use the current file name.
 
-```scss
-$asset_root: '../' !default;
+### HELP - I relied on these static assets having a consistent name!!!
 
-@use 'root_variables' with ($root_path: $asset_path);
-@use 'components/menu' as *;
-```
+There are circumstances where you may have, in the past, manually referred to these files. The Kanopi Pack Asset Loader offered a method to refer to files in the static assets directory.
 
-Please note the assignment `$root_path: $asset_root` is passing the asset path into the other SCSS module, where we chose the name `$root_path` as a variable with default value in the module. The `asset/src/scss/root_variables.scss` file is then of the form:
+If you did this, you are strongly encouraged to find another location for these files, for instance using a CMS media library or static directory that never changes.
 
-```scss
-$root_path: '../' !default;
-$static_image_path: $root_path + 'static/images/';
+If you still need this, you need to do two things:
 
-:root {
-	--my-icon-menu-svg: url('#{static_image_path}menu.svg');
-}
-```
-
+1. Make a reference to the file(s) you need in a CSS (`url()`) or JS (`@import`), this ensures it is part of the distributed files.
+2. Edit the `filePatterns.staticAssetOutputPath` configuration variable and set it to `[name][ext]`, this removes the hash so `assets/src/static/image/menu.svg` becomes `assets/dist/static/images/menu.svg`.

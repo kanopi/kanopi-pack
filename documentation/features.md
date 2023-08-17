@@ -19,7 +19,7 @@ The Development Server solution is different than some other similar middleware 
 
 ## Static Asset (Images, Icons, etc) Management
 
-Any images, icons, etc. which are bundled as part of the final package can be included in a subdirectory, `/static/` of the asset root folder, and are automatically copied into the distributed packages directory structure.
+Any images, icons, etc. which are used via CSS or JS as part of the final package can be included in a subdirectory, i.e. `/src/static/` of the `src` assets folder, and are automatically copied into the distributed packages directory structure under the same file path, i.e. `/dist/static/`.
 
 The location of these files, relative to Development or Production URLs is included dynamically into the root of any project styles. This allows you to reference and change images while in development and manage deployment through the bundle, instead of requiring a full bundle rebuild or separate versions for those assets.
 
