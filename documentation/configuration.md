@@ -230,3 +230,43 @@ Style configuration options, especially related to StyleLint. By default, it use
 | `styleLintConfigFile` | node_modules/@kanopi/pack/configuration/tools/stylelint.config.js | No | String | Relative path for StyleLint configuration file |
 | `styleLintIgnorePath` | node_modules/@kanopi/pack/configuration/tools/.stylelintignore | No | String | Relative path for a StyleLint ignore file |
 | `useSass` | true | No | Boolean | When enabled, SASS styles are compiled |
+
+### Available PostCSS Plugins
+
+The following plugins are added by default, in the following order: 
+
+- [postcss-import-ext-glob](https://github.com/dimitrinicolas/postcss-import-ext-glob)
+- [postcss-import](https://github.com/postcss/postcss-import)
+- [postcss-mixins](https://github.com/postcss/postcss-mixins)
+- [postcss-custom-selectors](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-custom-selectors)
+- [postcss-nested](https://github.com/postcss/postcss-nested)
+- [postcss-custom-media](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-custom-media)
+- [postcss-preset-env](https://github.com/csstools/postcss-plugins/tree/main/plugin-packs/postcss-preset-env)
+
+#### Overriding PostCSS plugins
+
+In order to use a different set of PostCSS plugins OR add options to existing plugins, you can set the `styles.postCssCustomizePluginOrder` property. The following example keeps all of the available plugins in order, adding options to `postcss-import` and keeps the autoprefixer for grid enabled.
+
+```
+    "styles": {
+        "postCssCustomizePluginOrder": [
+          'postcss-import-ext-glob',
+          [
+            'postcss-import',
+            {
+              ... options
+            }
+          ],
+          'postcss-mixins',
+          'postcss-custom-selectors',
+          'postcss-nested',
+          'postcss-custom-media',
+          [
+            'postcss-preset-env',
+            {
+              autoprefixer: { 'grid': 'autoplace' }
+            }
+          ]
+        ]
+    }
+```
