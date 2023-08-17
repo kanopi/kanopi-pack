@@ -1,15 +1,8 @@
 module.exports = () => {
-    return [
-        {
-            test: /\.(png|jpg|gif|svg|woff|woff2|ttf)$/,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: {
-                        emitFile: false
-                    }
-                }
-            ]
-        }
-    ]
+  return [
+    {
+      test: /\.(png|svg|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/i,
+      type: 'asset/resource'
+    }
+  ];
 }

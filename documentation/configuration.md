@@ -108,7 +108,8 @@ A map of input (`entryPoints`) file locations and output file path patterns.
             "scripts": "relative/path/to/file.js",
             "styles": "relative/path/to/file.scss"
         },
-        "jsOutputPath": "js/[name].js"
+        "jsOutputPath": "js/[name].js",
+        "staticAssetOutputName": "[name].[hash][ext][query]"
     }
 
 
@@ -119,6 +120,7 @@ A map of input (`entryPoints`) file locations and output file path patterns.
 | `cssOutputPath` | css/[name].css | No | String | Output path for CSS files, accepts tokens like `[name]` and `[hash]` |
 | `entryPoints` | {} | Yes | ObjectMap[Name:FilePath] |  Map of `[name]` tokens to the entry file path; the project fails/exits if this is empty |
 | `jsOutputPath` | js/[name].js | No | String | Output path for CSS files, accepts tokens like `[name]` and `[hash]` |
+| `staticAssetOutputName` | [name].[hash][ext][query] | No | String | Output name for static files (like Fonts and Images), accepts tokens like `[name]`, `[ext]` (contains the preceding .) and `[hash]`. Static files retain their relative path to the `src` directory so paths are consistent in the `dist` folder. |
 
 ## Section: `minification` 
 Configure minification of assets using Terser.
@@ -206,11 +208,13 @@ Style configuration options, especially related to StyleLint. By default, it use
 
     "styles": {
         "devHeadSelectorInsertBefore": undefined,
+        "postCssCustomizePluginOrder": undefined,
         "scssIncludes": [],
         "styleLintAutoFix": true,
         "styleLintConfigBaseDir": null,
-        "styleLintConfigFile": null
-        "styleLintIgnorePath": null
+        "styleLintConfigFile": null,
+        "styleLintIgnorePath": null,
+        "useSass": true
     }
 
 
@@ -219,8 +223,50 @@ Style configuration options, especially related to StyleLint. By default, it use
 | Setting | Default | Required? | Type | Usage |
 |---------|---------|:---------:|------|-------|
 | `devHeadSelectorInsertBefore` | undefined | No | String | Specify a valid CSS selector in the document `head`, Dev Styles are inserted before it if present, or the bottom of the `head` tag when undefined or invalid  |
+| `postCssCustomizePluginOrder` | undefined | No | String|Object[] | Set of PostCSS plugin names or object with the Plugin Name and Options |
 | `scssIncludes` | [] | No | String[] | Set of SCSS files injected into each SCSS capable entry point |
 | `styleLintAutoFix` | true | No | Boolean | When enabled, automatically fix source files according to StyleLint rules |
 | `styleLintConfigBaseDir` | node_modules/@kanopi/pack | No | String | Relative path for StyleLint configuration options |
 | `styleLintConfigFile` | node_modules/@kanopi/pack/configuration/tools/stylelint.config.js | No | String | Relative path for StyleLint configuration file |
 | `styleLintIgnorePath` | node_modules/@kanopi/pack/configuration/tools/.stylelintignore | No | String | Relative path for a StyleLint ignore file |
+| `useSass` | true | No | Boolean | When enabled, SASS styles are compiled |
+
+### Available PostCSS Plugins
+
+The following plugins are added by default, in the following order: 
+
+- [postcss-import-ext-glob](https://github.com/dimitrinicolas/postcss-import-ext-glob)
+- [postcss-import](https://github.com/postcss/postcss-import)
+- [postcss-mixins](https://github.com/postcss/postcss-mixins)
+- [postcss-custom-selectors](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-custom-selectors)
+- [postcss-nested](https://github.com/postcss/postcss-nested)
+- [postcss-custom-media](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-custom-media)
+- [postcss-preset-env](https://github.com/csstools/postcss-plugins/tree/main/plugin-packs/postcss-preset-env)
+
+#### Overriding PostCSS plugins
+
+In order to use a different set of PostCSS plugins OR add options to existing plugins, you can set the `styles.postCssCustomizePluginOrder` property. The following example keeps all of the available plugins in order, adding options to `postcss-import` and keeps the autoprefixer for grid enabled.
+
+```
+    "styles": {
+        "postCssCustomizePluginOrder": [
+          'postcss-import-ext-glob',
+          [
+            'postcss-import',
+            {
+              ... options
+            }
+          ],
+          'postcss-mixins',
+          'postcss-custom-selectors',
+          'postcss-nested',
+          'postcss-custom-media',
+          [
+            'postcss-preset-env',
+            {
+              autoprefixer: { 'grid': 'autoplace' }
+            }
+          ]
+        ]
+    }
+```

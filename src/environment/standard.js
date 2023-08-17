@@ -1,72 +1,22 @@
 /**
- * Main configuration file for Kanopi's Webpack Implementation
+ * Main configuration file processor, compiles the full set of options between defaults and the project configuration
  */
 
-/**
- * @typedef {Object} DistributionPaths
- * @property {string} fullPath - Full path to the distribution files
- * @property {string} relativePath - Relative path to the distribution files
- */
-
-const fs = require('fs');
 const path = require('path');
-const { exit } = require('process');
-const calling_project_root = process.cwd();
-const kanopi_pack_root = path.resolve(__dirname, '..', '..');
 const { readEnvironmentVariables } = require('./modules/environment');
 const { readDevelopmentConfiguration } = require('./modules/developmentServer');
+const pathResolver = require('./modules/resolver');
+const configurationLoader = require('./modules/configurationFileLoader');
+const kanopiPackConfig = configurationLoader.read(pathResolver);
 
-const pathResolver = {
-  toCallingPackage: (pathFragment) => {
-    return path.resolve(calling_project_root, pathFragment);
-  },
-  toKanopiPack: (pathFragment) => {
-    return path.resolve(kanopi_pack_root, pathFragment);
-  },
-  requirePackageModule: (packageName) => {
-    return require(pathResolver.toCallingPackage('node_modules/' + packageName));
-  }
-};
-
-const chalk = pathResolver.requirePackageModule('chalk');
-
-const configuration_locations = [
-  pathResolver.toCallingPackage('kanopi-pack.js'),
-  pathResolver.toCallingPackage('assets/configuration/kanopi-pack.js'),
-  pathResolver.toCallingPackage('kanopi-pack.json'),
-  pathResolver.toCallingPackage('assets/configuration/kanopi-pack.json')
-];
-
-let kanopiPackConfig;
-
-for (let path_index in configuration_locations) {
-  let config_path = configuration_locations[path_index];
-  if (fs.existsSync(config_path)) {
-    kanopiPackConfig = require(config_path);
-    break;
-  }
-}
-
-if (!kanopiPackConfig) {
-  console.log(chalk.red("ERROR: ") + "kanopi-pack.json configuration file not found, checked the following locations:");
-  configuration_locations.forEach((location) => {
-    console.log(chalk.yellow(location));
-  })
-  exit();
-}
-
-let assets_relative_to_root = kanopiPackConfig?.paths?.assetsRelativeToRoot ?? 'assets';
-let assets = pathResolver.toCallingPackage(assets_relative_to_root);
-let distribution_path = pathResolver.toCallingPackage(path.join(assets_relative_to_root, 'dist'));
-let source_path = pathResolver.toCallingPackage(path.join(assets_relative_to_root, 'src'));
-let path_aliases = kanopiPackConfig?.paths?.aliases ?? { '@': source_path };
-
-let externalScripts = kanopiPackConfig?.externals ?? { jquery: 'jQuery' };
-let additionalResolveExtensions = kanopiPackConfig?.scripts?.additionalResolveExtensions ?? '';
-let typescript_filetype_patterns = kanopiPackConfig?.scripts?.additionalTypescriptFileTypes ?? [];
+const assetRelativePathToRoot = kanopiPackConfig?.paths?.assetsRelativeToRoot ?? 'assets';
+const distributionPath = pathResolver.toCallingPackage(path.join(assetRelativePathToRoot, 'dist'));
+const sourcePath = pathResolver.toCallingPackage(path.join(assetRelativePathToRoot, 'src'));
+const sourceRelativePathToRoot = path.join(assetRelativePathToRoot, 'src') + '/';
+const staticAssetOutputName = kanopiPackConfig?.filePatterns?.staticAssetOutputName ?? '[name].[hash][ext][query]';
 
 const {
-  configuration: development_configuration,
+  configuration: developmentConfiguration,
   paths: {
     local: devServerLocalPath,
     public: devServerPublicPath
@@ -74,21 +24,29 @@ const {
 } = readDevelopmentConfiguration(
   kanopiPackConfig?.devServer ?? {},
   {
-    fullPath: distribution_path,
-    relativePath: path.join(assets_relative_to_root, 'dist')
+    fullPath: distributionPath,
+    relativePath: path.join(assetRelativePathToRoot, 'dist')
   }
 );
 
 module.exports = {
-  devServer: development_configuration,
+  devServer: developmentConfiguration,
   environment: readEnvironmentVariables(kanopiPackConfig?.environment ?? {}),
-  externals: externalScripts,
+  externals: kanopiPackConfig?.externals ?? { jquery: 'jQuery' },
   filePatterns: {
     cssOutputPattern: kanopiPackConfig?.filePatterns?.cssOutputPath ?? 'css/[name].css',
     entryPoints: kanopiPackConfig?.filePatterns?.entryPoints ?? {},
     jsOutputPattern: {
       filename: kanopiPackConfig?.filePatterns?.jsOutputPath ?? 'js/[name].js',
-      path: distribution_path
+      path: distributionPath,
+      assetModuleFilename: (pathData) => {
+        const fileRelativePath = path.dirname(pathData.filename);
+        const fileDistributionPath = fileRelativePath.startsWith(sourceRelativePathToRoot)
+          ? fileRelativePath.replace(sourceRelativePathToRoot, '')
+          : fileRelativePath.split('/').slice(2).join('/');
+
+        return path.join(fileDistributionPath, staticAssetOutputName);
+      }
     }
   },
   minification: {
@@ -96,19 +54,19 @@ module.exports = {
     options: kanopiPackConfig?.minification?.options ?? {}
   },
   paths: {
-    aliases: path_aliases,
-    assets: assets,
-    assetsRelativeToRoot: assets_relative_to_root,
+    aliases: kanopiPackConfig?.paths?.aliases ?? { '@': sourcePath },
+    assets: pathResolver.toCallingPackage(assetRelativePathToRoot),
+    assetsRelativeToRoot: assetRelativePathToRoot,
     devServerLocal: devServerLocalPath,
     devServerPublic: devServerPublicPath,
-    distribution: distribution_path,
+    distribution: distributionPath,
     node: pathResolver.toCallingPackage('node_modules'),
-    source: source_path
+    source: sourcePath
   },
   resolver: pathResolver,
   scripts: {
-    additionalResolveExtensions: additionalResolveExtensions,
-    additionalTypescriptFileTypes: typescript_filetype_patterns,
+    additionalResolveExtensions: kanopiPackConfig?.scripts?.additionalResolveExtensions ?? '',
+    additionalTypescriptFileTypes: kanopiPackConfig?.scripts?.additionalTypescriptFileTypes ?? [],
     esLintAutoFix: kanopiPackConfig?.scripts?.esLintAutoFix ?? true,
     esLintDisable: kanopiPackConfig?.scripts?.esLintDisable ?? false,
     esLintFileTypes: (kanopiPackConfig?.scripts?.esLintFileTypes ?? 'js,jsx,ts,tsx').split(','),
@@ -117,11 +75,13 @@ module.exports = {
   sourceMaps: kanopiPackConfig?.sourceMaps ?? false,
   styles: {
     devHeadSelectorInsertBefore: kanopiPackConfig?.styles?.devHeadSelectorInsertBefore ?? undefined,
+    postCssCustomizePluginOrder: kanopiPackConfig?.styles?.postCssCustomizePluginOrder ?? undefined,
     scssIncludes: kanopiPackConfig?.styles?.scssIncludes ?? [],
     styleLintAutoFix: kanopiPackConfig?.styles?.styleLintAutoFix ?? true,
     styleLintConfigBaseDir: kanopiPackConfig?.styles?.styleLintConfigBaseDir ?? pathResolver.toKanopiPack(''),
     styleLintConfigFile: kanopiPackConfig?.styles?.styleLintConfigFile ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', 'stylelint.config.js')),
-    styleLintIgnorePath: kanopiPackConfig?.styles?.styleLintIgnorePath ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintignore'))
+    styleLintIgnorePath: kanopiPackConfig?.styles?.styleLintIgnorePath ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintignore')),
+    useSass: kanopiPackConfig?.styles?.useSass ?? true
   },
   watchOptions: kanopiPackConfig?.devServer?.watchOptions ?? {}
 }

@@ -1,73 +1,73 @@
 /**
  * Set of Webpack Loaders for Stylesheets
- *  - Adds SASS/SCSS and PostCSS support
+ *  - Implements the CSS and PostCSS loaders
+ *  - Optionally use SASS via option
+ *  - Allows pre-pending file paths to all CSS entry-points
  *  - Excludes a style-loader, since that tends to vary per application/framework
  * 
  * @param {object} environment - Kanopi Pack environment (Standard Interface)
- * @param {string} prepend_variable_data - SASS/SCSS variable data to override !default values
  * 
  * @returns {Array} - Set of required and configured Webpack Plugins
  */
- module.exports = (environment, prepend_variable_data) => {
-    const { 
-        resolver: { requirePackageModule },
-    } = environment;
+module.exports = (environment) => {
+  const {
+    styles: { postCssCustomizePluginOrder: customOrder, useSass }
+  } = environment;
 
-    const PostCSSPresetEnv = requirePackageModule('postcss-preset-env');
-    const Sass = requirePackageModule('sass');
-    
-    let isSourceMapsEnabled = environment?.sourceMaps ?? false;
-    let prependedPaths = environment?.styles?.scssIncludes ?? [];
-    let prependVariableData = prepend_variable_data ?? '';
-    let usePrependedPaths = Array.isArray(prependedPaths) && 0 < prependedPaths.length;
-
-    let baseRules = [
+  /**
+   * @var {Array<string|Array<string|Object>} PostCSSPlugins - Set of plugin names or objects with plugin name and options
+   */
+  const PostCSSPlugins = 'undefined' !== typeof (customOrder) && Array.isArray(customOrder)
+    ? customOrder
+    : [
+      'postcss-import-ext-glob',
+      'postcss-import',
+      'postcss-mixins',
+      'postcss-custom-selectors',
+      'postcss-nested',
+      'postcss-custom-media',
+      [
+        'postcss-preset-env',
         {
-            loader: 'css-loader',
-            options: {
-                sourceMap: isSourceMapsEnabled,
-                url: false
-            }
-        },
-        {
-            loader: 'postcss-loader',
-            options: {
-                postcssOptions: {
-                    plugins: [
-                        PostCSSPresetEnv,
-                        {
-                            autoprefixer: { 'grid': 'autoplace' }
-                        }
-                    ]
-                },
-                sourceMap: isSourceMapsEnabled
-            }
-        },
-        {
-            loader: 'sass-loader',
-            options: {
-                additionalData: prependVariableData,
-                implementation: Sass,
-                sassOptions: {
-                    includePaths: [
-                        environment?.paths?.node ?? ''
-                    ],
-                    linefeed: 'lf',
-                    outputStyle: 'expanded',
-                },
-                sourceMap: isSourceMapsEnabled,
-            }
+          autoprefixer: { 'grid': 'autoplace' }
         }
+      ]
     ];
 
-    if (usePrependedPaths) {
-        baseRules.push({
-            loader: 'style-resources-loader',
-            options: {
-                patterns: prependedPaths
-            }
-        });
-    }
+  let isSourceMapsEnabled = environment?.sourceMaps ?? false;
+  let prependedPaths = environment?.styles?.scssIncludes ?? [];
+  let usePrependedPaths = Array.isArray(prependedPaths) && 0 < prependedPaths.length;
 
-    return baseRules;
+  let baseRules = [
+    {
+      loader: 'css-loader',
+      options: {
+        sourceMap: isSourceMapsEnabled
+      }
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        postcssOptions: {
+          plugins: PostCSSPlugins
+        },
+        sourceMap: isSourceMapsEnabled
+      }
+    },
+  ];
+
+  if (useSass) {
+    baseRules.push(require('./sass')(environment));
+  }
+
+  if (usePrependedPaths) {
+    baseRules.push({
+      loader: 'style-resources-loader',
+      options: {
+        patterns: prependedPaths
+      }
+    });
+  }
+
+  return baseRules;
 }

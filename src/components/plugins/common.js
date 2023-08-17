@@ -39,15 +39,6 @@ module.exports = (environment) => {
       fix: styleLintAutoFix,
       ignorePath: styleLintIgnorePath
     }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(sourcePath, 'static'),
-          to: 'static/',
-          toType: 'dir'
-        }
-      ]
-    }),
     new webpack.ids.HashedModuleIdsPlugin({
       context: sourcePath,
       hashFunction: 'sha256',

@@ -11,7 +11,8 @@ When`@kanopi/pack` is referenced in another package (i.e. `require('@kanopi/pack
 
     {
         "commands": {
-            "standard": 'Wrapper for the Commander CLI runner, see repository and bin script for example usage'
+            "check-configuration": "Commander CLI runner to check the current effective configuration sent to Webpack"
+            "standard": 'Commander CLI runner, see repository and bin script for example usage'
         }
         "configuration": {
             "common": 'Common profile and plugins for all build profiles',

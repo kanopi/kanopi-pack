@@ -57,6 +57,20 @@ Configuration is implemented via the Main Configuration File, with Preferred loc
 
 ## Node & Package Compatibility
 
-- Node 16.x minimum is required for v2.x, if you need lower use v1.x
-- Kanopi Pack React and Vue versions both track with Kanopi Pack, use v1.x and v2.x accordingly
-- Chalk v5.x uses ESM which is not compatible with the rest of the Node modules used here, it is locked at v4.x for now.
+### Dependency Limitations
+
+| Package | Version | Notes                                                                                                                  | 
+|:--------|:--------|:-----------------------------------------------------------------------------------------------------------------------|
+| Chalk   | 4.x     | Chalk v5.x uses ESM which is not compatible with the rest of the Node modules used here, it is locked at v4.x for now. |
+
+
+### Platform Software Requirements
+
+| Package | Minimum | Recommended | 
+|:--------|:--------|:------------|
+| Node    | 16.x    | 20.x        |
+| NPM     | 8.x     | 9.x         |
+
+### Dependent Packages
+
+- Kanopi Pack React and Kanopi Pack Vue versions both track with Kanopi Pack, use v1.x and v2.x accordingly
