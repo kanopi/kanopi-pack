@@ -76,6 +76,7 @@ module.exports = {
   styles: {
     devHeadSelectorInsertBefore: kanopiPackConfig?.styles?.devHeadSelectorInsertBefore ?? undefined,
     postCssCustomizePluginOrder: kanopiPackConfig?.styles?.postCssCustomizePluginOrder ?? undefined,
+    postCssCustomParser: kanopiPackConfig?.styles?.postCssCustomParser ?? undefined,
     scssIncludes: kanopiPackConfig?.styles?.scssIncludes ?? [],
     styleLintAutoFix: kanopiPackConfig?.styles?.styleLintAutoFix ?? true,
     styleLintConfigBaseDir: kanopiPackConfig?.styles?.styleLintConfigBaseDir ?? pathResolver.toKanopiPack(''),
