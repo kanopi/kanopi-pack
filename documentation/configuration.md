@@ -224,6 +224,7 @@ Style configuration options, especially related to StyleLint. By default, it use
 |---------|---------|:---------:|------|-------|
 | `devHeadSelectorInsertBefore` | undefined | No | String | Specify a valid CSS selector in the document `head`, Dev Styles are inserted before it if present, or the bottom of the `head` tag when undefined or invalid  |
 | `postCssCustomizePluginOrder` | undefined | No | String|Object[] | Set of PostCSS plugin names or object with the Plugin Name and Options |
+| `postCssCustomParser` | undefined | No | String | Set a custom parser for PostCSS, for instance, use postcss-scss to parse SCSS syntax |
 | `scssIncludes` | [] | No | String[] | Set of SCSS files injected into each SCSS capable entry point |
 | `styleLintAutoFix` | true | No | Boolean | When enabled, automatically fix source files according to StyleLint rules |
 | `styleLintConfigBaseDir` | node_modules/@kanopi/pack | No | String | Relative path for StyleLint configuration options |

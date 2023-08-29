@@ -11,7 +11,7 @@
  */
 module.exports = (environment) => {
   const {
-    styles: { postCssCustomizePluginOrder: customOrder, useSass }
+    styles: { postCssCustomizePluginOrder: customOrder, postCssCustomParser: postCssParser, useSass }
   } = environment;
 
   /**
@@ -34,6 +34,15 @@ module.exports = (environment) => {
       ]
     ];
 
+  const PostCSSOptions = 'undefined' !== typeof postCssParser
+    ? {
+      parser: postCssParser,
+      plugins: PostCSSPlugins
+    }
+    : {
+      plugins: PostCSSPlugins
+    }
+
   let isSourceMapsEnabled = environment?.sourceMaps ?? false;
   let prependedPaths = environment?.styles?.scssIncludes ?? [];
   let usePrependedPaths = Array.isArray(prependedPaths) && 0 < prependedPaths.length;
@@ -48,9 +57,7 @@ module.exports = (environment) => {
     {
       loader: 'postcss-loader',
       options: {
-        postcssOptions: {
-          plugins: PostCSSPlugins
-        },
+        postcssOptions: PostCSSOptions,
         sourceMap: isSourceMapsEnabled
       }
     },
