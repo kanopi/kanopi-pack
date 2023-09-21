@@ -26,7 +26,6 @@ module.exports = (environment) => {
       styleLintIgnorePath
     }
   } = environment;
-  const CopyWebpackPlugin = requirePackageModule('copy-webpack-plugin');
   const Dotenv = requirePackageModule('dotenv-webpack');
   const EsLintPlugin = requirePackageModule('eslint-webpack-plugin');
   const StyleLintPlugin = requirePackageModule('stylelint-webpack-plugin');
