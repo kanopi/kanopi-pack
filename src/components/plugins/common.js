@@ -1,5 +1,3 @@
-const path = require('path');
-
 /**
  * Common set of Webpack Plugins for all environments
  * 

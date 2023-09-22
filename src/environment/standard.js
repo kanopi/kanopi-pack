@@ -3,6 +3,7 @@
  */
 
 const path = require('path');
+const { readAssetFileTypes } = require('./modules/assets');
 const { readEnvironmentVariables } = require('./modules/environment');
 const { readDevelopmentConfiguration } = require('./modules/developmentServer');
 const pathResolver = require('./modules/resolver');
@@ -30,6 +31,7 @@ const {
 );
 
 module.exports = {
+  assets: readAssetFileTypes(kanopiPackConfig?.assets),
   devServer: developmentConfiguration,
   environment: readEnvironmentVariables(kanopiPackConfig?.environment ?? {}),
   externals: kanopiPackConfig?.externals ?? { jquery: 'jQuery' },

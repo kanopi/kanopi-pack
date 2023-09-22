@@ -10,6 +10,7 @@ A full list of available configuration options along with default values or dire
 
 The following sections allow customization with listed `defaults` and `optional\required` status.
 
+* [`assets`](#section-assets)
 * [`devServer`](#section-devserver)
 * [`environment`](#section-environment)
 * [`externals`](#section-externals)
@@ -19,6 +20,26 @@ The following sections allow customization with listed `defaults` and `optional\
 * [`scripts`](#section-scripts)
 * [`sourcemaps`](#section-sourcemaps)
 * [`styles`](#section-styles)
+
+
+
+## Section: `assets` 
+Optional settings configure how different asset file types are handled. When an option is set for `inlineFileTypes`, they are removed for the list of Resources automatically.
+
+### Structure 
+
+    "assets": {
+        "inlineFileTypes": [],
+        "resourceFileTypes": ['png', 'svg', 'jpg', 'jpeg', 'gif', 'woff', 'woff2', 'eot', 'ttf', 'otf'],
+    }
+
+### Details
+
+| Setting | Default | Required? | Type | Usage |
+|---------|---------|:---------:|------|-------|
+| `inlineFileTypes` | [] | No | string|string[] | Set of file extensions, filtered out of `resourceFileType` automatically |
+| `resourceFileTypes` | 'png', 'svg', 'jpg', 'jpeg', 'gif', 'woff', 'woff2', 'eot', 'ttf', 'otf'] | No | string|string[] | Set to change the defaults |
+
 
 ## Section: `devServer`
 Configure Webpack Dev Server, by default runs on `0.0.0.0:4400`, with asset listing at `http://0.0.0.0:4400/webpack-dev-server`.
@@ -53,6 +74,7 @@ Configure Webpack Dev Server, by default runs on `0.0.0.0:4400`, with asset list
 | `watchOptions` |  | No | Object | - |
 | `watchOptions.aggregateTimeout` | 600 | No | Numeric | Wait time (debounce) after a file change to process bundle changes |
 | `watchOptions.poll` | false | No | Boolean | Set true to enable file system pooling, required for use in containers |
+
 
 ## Section: `environment` 
 Optional settings configure environment variables through Dotenv.
