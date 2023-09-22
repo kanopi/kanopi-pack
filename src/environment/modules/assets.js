@@ -24,12 +24,14 @@ module.exports = {
    * @returns {AssetFileTypes} 
    */
   readAssetFileTypes: ({ inlineFileTypes = [], resourceFileTypes = defaultResources } = {}) => {
-    let inline = 'string' === typeof inlineFileTypes
-      ? inlineFileTypes.split(',')
-      : (Array.isArray(inlineFileTypes) ? inlineFileTypes : []);
-    let allResources = 'string' === typeof resourceFileTypes
-      ? resourceFileTypes.split(',')
-      : (Array.isArray(resourceFileTypes) ? resourceFileTypes : []);
+    /**
+     * @param {string} incoming  - Comma-delimited string 
+     * @returns {string[]}
+     */
+    const splitCommaDelimitedString = (incoming) => 'string' === typeof incoming ? incoming.split(',') : [];
+
+    const inline = Array.isArray(inlineFileTypes) ? inlineFileTypes : splitCommaDelimitedString(inlineFileTypes);
+    let allResources = Array.isArray(resourceFileTypes) ? resourceFileTypes : splitCommaDelimitedString(resourceFileTypes);
     let resources = allResources.filter((resource) => -1 === inline.indexOf(resource));
 
     return {
