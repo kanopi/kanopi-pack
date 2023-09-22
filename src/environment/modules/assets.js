@@ -30,7 +30,7 @@ module.exports = {
     let allResources = 'string' === typeof resourceFileTypes
       ? resourceFileTypes.split(',')
       : (Array.isArray(resourceFileTypes) ? resourceFileTypes : []);
-    let resources = allResources.filter((resource) => false === inline.contains(resource));
+    let resources = allResources.filter((resource) => -1 === inline.indexOf(resource));
 
     return {
       inline,

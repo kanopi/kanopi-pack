@@ -1,13 +1,13 @@
 /**
  * 
- * @param {AssetFileTypes} environment 
+ * @param {{ assets: AssetFileTypes}} environment 
  * @returns {array}
  */
-module.exports = (environment) => {
+module.exports = ({ assets } = {}) => {
   const {
-    inline,
-    resources
-  } = environment;
+    inline = [],
+    resources = []
+  } = assets;
 
   const rules = [];
 
