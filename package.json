@@ -49,6 +49,7 @@
     "file-loader": "~6.2.0",
     "glob": "~10.3.4",
     "mini-css-extract-plugin": "~2.7.6",
+    "mini-svg-data-uri": "^1.4.4",
     "pkg-dir": "~7.0.0",
     "postcss": "~8.4.30",
     "postcss-custom-media": "~10.0.1",
