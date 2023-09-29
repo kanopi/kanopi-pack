@@ -24,7 +24,7 @@ module.exports = merge(
     ...devServerProfile(environment),
     module: {
       rules: [
-        ...FileRules(),
+        ...FileRules(environment),
         ...TypescriptRules(environment),
         {
           test: /\.(css|scss|sass)$/,

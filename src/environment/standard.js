@@ -1,8 +1,24 @@
 /**
+ * @typedef {Object} PackConfiguration
+ * @property {AssetFileTypes} assets - Asset loader file type configuration
+ * @property {DevelopmentServerConfiguration} devServer - Development server configuration
+ * @property {DotEnvConfiguration} environment - Support for DotEnv configuration files
+ * @property {Object} filePatterns - Set of file patterns for input/output files
+ * @property {Object} minification - Minification controls
+ * @property {Object} paths - Set of determined paths to project files
+ * @property {PathResolver} resolver - Resolve paths to this and other Node modules
+ * @property {boolean} sourceMaps - Control whether to enable source maps 
+ * @property {Object} scripts - JS/TS/Script Linting Configuration
+ * @property {Object} styles - CSS/SASS/Style Linting Configuration
+ * @property {Object} watchOptions - DevServer polling configuration
+ */
+
+/**
  * Main configuration file processor, compiles the full set of options between defaults and the project configuration
  */
 
 const path = require('path');
+const { readAssetFileTypes } = require('./modules/assets');
 const { readEnvironmentVariables } = require('./modules/environment');
 const { readDevelopmentConfiguration } = require('./modules/developmentServer');
 const pathResolver = require('./modules/resolver');
@@ -29,7 +45,11 @@ const {
   }
 );
 
+/**
+ * @returns {PackConfiguration}
+ */
 module.exports = {
+  assets: readAssetFileTypes(kanopiPackConfig?.assets),
   devServer: developmentConfiguration,
   environment: readEnvironmentVariables(kanopiPackConfig?.environment ?? {}),
   externals: kanopiPackConfig?.externals ?? { jquery: 'jQuery' },

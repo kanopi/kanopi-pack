@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 const chalk = require('chalk');
-const package = require('../index');
+const kanopiPack = require('../index');
 const utility = require('util');
 const {
   commands: { standard: program },
   configuration: { development, production },
   runners: { runDevServer, runWebpack }
-} = package;
+} = kanopiPack;
 
 program
   .command('check-configuration')
