@@ -1,4 +1,6 @@
-**/*.css
+assets/dist/**/*.css
 assets/dist/**/*.js
+dist/**/*.css
 dist/**/*.js
+vendor/**/*.css
 vendor/**/*.js
