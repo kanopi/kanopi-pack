@@ -32,7 +32,7 @@ module.exports = (configuration) => {
       ...devServerSettings,
       client: {
         ...devServerSettings.client,
-        overlay: { warnings: false, errors: true }
+        overlay: { warnings: false, errors: true, runtimeErrors: false }
       },
       headers: {
         'Access-Control-Allow-Origin': '*'
