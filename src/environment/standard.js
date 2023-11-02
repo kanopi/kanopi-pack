@@ -31,6 +31,10 @@ const sourcePath = pathResolver.toCallingPackage(path.join(assetRelativePathToRo
 const sourceRelativePathToRoot = path.join(assetRelativePathToRoot, 'src') + '/';
 const staticAssetOutputName = kanopiPackConfig?.filePatterns?.staticAssetOutputName ?? '[name].[hash][ext][query]';
 
+const useSass = kanopiPackConfig?.styles?.useSass ?? true;
+const defaultStyleLintConfiguration = pathResolver.toKanopiPack(path.join('..', 'configuration', 'tools', 'stylelint.config.js'));
+const defaultStyleLintIgnore = pathResolver.toKanopiPack(path.join('..', 'configuration', 'tools', '.stylelintignore'));
+
 const {
   configuration: developmentConfiguration,
   paths: {
@@ -100,9 +104,9 @@ module.exports = {
     scssIncludes: kanopiPackConfig?.styles?.scssIncludes ?? [],
     styleLintAutoFix: kanopiPackConfig?.styles?.styleLintAutoFix ?? true,
     styleLintConfigBaseDir: kanopiPackConfig?.styles?.styleLintConfigBaseDir ?? pathResolver.toKanopiPack(''),
-    styleLintConfigFile: kanopiPackConfig?.styles?.styleLintConfigFile ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', 'stylelint.config.js')),
-    styleLintIgnorePath: kanopiPackConfig?.styles?.styleLintIgnorePath ?? pathResolver.toKanopiPack(path.join('configuration', 'tools', '.stylelintignore')),
-    useSass: kanopiPackConfig?.styles?.useSass ?? true
+    styleLintConfigFile: kanopiPackConfig?.styles?.styleLintConfigFile ?? defaultStyleLintConfiguration,
+    styleLintIgnorePath: kanopiPackConfig?.styles?.styleLintIgnorePath ?? defaultStyleLintIgnore,
+    useSass: useSass
   },
   watchOptions: kanopiPackConfig?.devServer?.watchOptions ?? {}
 }
