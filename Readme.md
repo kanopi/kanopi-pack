@@ -59,9 +59,10 @@ Configuration is implemented via the Main Configuration File, with Preferred loc
 
 ### Dependency Limitations
 
-| Package | Version | Notes                                                                                                                  | 
-|:--------|:--------|:-----------------------------------------------------------------------------------------------------------------------|
-| Chalk   | 4.x     | Chalk v5.x uses ESM which is not compatible with the rest of the Node modules used here, it is locked at v4.x for now. |
+| Package   | Version | Notes                                                                                                                  | 
+|:----------|:--------|:-----------------------------------------------------------------------------------------------------------------------|
+| Chalk     | 4.x     | Chalk v5.x uses ESM which is not compatible with the rest of the Node modules used here, it is locked at v4.x for now. |
+| Stylelint | 15.x    | Other Stylelint packages are restricted to 15.x maximum currently, will reevaluate in future cycles.                   | 
 
 
 ### Platform Software Requirements
