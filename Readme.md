@@ -19,7 +19,7 @@ The main goals of Kanopi Pack are the following:
 
 * Consolidate management of many common Node module dependencies into a single module. This package is a wrapper for Webpack and coordinates its configuration and implemented modules.
 * Provide common configuration profiles to support many projects with minimal boilerplate
-* Built modularly through a configuration interface to support future extension and replacement of key features, with minimal to no effort for implementing projects
+* Builds a modular configuration interface to support future extension and replacement of key features, with less effort for implementing projects
 * Provide consistent Static Asset (JS/CSS/Images/etc) bundles across projects, with built-in incremental reloads for development environments
 * Support legacy JS/CSS code while incrementally adopting newer style applications, optionally using technologies like ES Modules and TypeScript or frameworks/libraries like React and Vue
 
@@ -59,10 +59,13 @@ Configuration is implemented via the Main Configuration File, with Preferred loc
 
 ### Dependency Limitations
 
-| Package   | Version | Notes                                                                                                                  | 
-|:----------|:--------|:-----------------------------------------------------------------------------------------------------------------------|
-| Chalk     | 4.x     | Chalk v5.x uses ESM which is not compatible with the rest of the Node modules used here, it is locked at v4.x for now. |
-| Stylelint | 15.x    | Other Stylelint packages are restricted to 15.x maximum currently, will reevaluate in future cycles.                   | 
+| Package                  | Version | Notes                                                                                                                  | 
+|:-------------------------|:--------|:-----------------------------------------------------------------------------------------------------------------------|
+| Chalk                    | 4.x     | Chalk v5.x uses ESM which is not compatible with the rest of the Node modules used here, it is locked at v4.x for now. |
+| Commander                | 11.x    | There are some API changes which require further evaluation outside of a standard update.                              |
+| StyleLint                | 15.x    | Other Stylelint packages are restricted to 15.x maximum currently, will reevaluate in future cycles.                   | 
+| StyleLint Webpack Plugin | 4.x     | StyleLint 16.x and Node 18.x support, keeping back due to StyleLint version limitations                                |
+| Webpack Dev Server       | 4.x     | Dev Server API changes with version 5.x, requires evaluation outside of a standard maintenance cycle.                  |
 
 
 ### Platform Software Requirements
