@@ -9,7 +9,7 @@ module.exports = (environment) => {
   const {
     resolver: { requirePackageModule },
     paths: { node = '' },
-    sourceMap = false
+    sourceMaps = false
   } = environment;
 
   return {
@@ -23,7 +23,7 @@ module.exports = (environment) => {
         linefeed: 'lf',
         outputStyle: 'expanded',
       },
-      sourceMap: sourceMap,
+      sourceMap: sourceMaps,
     }
   };
 }

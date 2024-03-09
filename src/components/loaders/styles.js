@@ -11,6 +11,7 @@
  */
 module.exports = (environment) => {
   const {
+    sourceMaps = false,
     styles: { postCssCustomizePluginOrder: customOrder, postCssCustomParser: postCssParser, useSass }
   } = environment;
 
@@ -43,7 +44,6 @@ module.exports = (environment) => {
       plugins: PostCSSPlugins
     }
 
-  let isSourceMapsEnabled = environment?.sourceMaps ?? false;
   let prependedPaths = environment?.styles?.scssIncludes ?? [];
   let usePrependedPaths = Array.isArray(prependedPaths) && 0 < prependedPaths.length;
 
@@ -51,14 +51,14 @@ module.exports = (environment) => {
     {
       loader: 'css-loader',
       options: {
-        sourceMap: isSourceMapsEnabled
+        sourceMap: sourceMaps
       }
     },
     {
       loader: 'postcss-loader',
       options: {
         postcssOptions: PostCSSOptions,
-        sourceMap: isSourceMapsEnabled
+        sourceMap: sourceMaps
       }
     },
   ];
