@@ -48,7 +48,7 @@ catch (exception) {
   console.log(exception);
 }
 
-if ({} === packageTree) {
+if (packageTree && 0 === Object.keys(packageTree).length) {
   console.log('Kanopi Pack is not installed properly, its internal file structure is not found or unable to load. Check the NPM installation and permissions.');
 }
 

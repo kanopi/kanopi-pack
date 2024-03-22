@@ -27,7 +27,7 @@ The main goals of Kanopi Pack are the following:
 
 * Are you using Grunt, Gulp, some other older technology, or even nothing to manage your static assets?
 * Do you want to incrementally add a front-end application, written in React or Vue, alongside your existing site JS code?
-* Do you want to start writing or supporting ES Modules, SCSS, or Typescript within your project?
+* Do you want to start writing or supporting ES Modules, Modern CSS with PostCSS, SCSS, or Typescript within your project?
 * Do you want to utilize code quality tools like ESLint or StyleLint without managing additional modules and figuring out how to integrate it with your build pipeline?
 * Are you using static image/icon assets and want the ability to update them during development without a full bundle build or separate platform integration?
 
@@ -72,8 +72,8 @@ Configuration is implemented via the Main Configuration File, with Preferred loc
 
 | Package | Minimum | Recommended | 
 |:--------|:--------|:------------|
-| Node    | 16.x    | 20.x        |
-| NPM     | 8.x     | 9.x         |
+| Node    | 18.x    | 20.x        |
+| NPM     | 9.x     | 10.x         |
 
 ### Dependent Packages
 

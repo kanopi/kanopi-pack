@@ -5,9 +5,16 @@ const kanopiPack = require('../index');
 const utility = require('util');
 const {
   commands: { standard: program },
-  configuration: { development, production },
-  runners: { runDevServer, runWebpack }
+  configuration: { development, production, watch },
+  environment: { standard: { watchOptions } },
+  runners: { runDevServer, runWebpack, watchWebpack }
 } = kanopiPack;
+
+const PACKAGE_MODES = {
+  'development': { name: 'Development', runner: () => runDevServer(development) },
+  'production': { name: 'Production', runner: () => runWebpack(production) },
+  'watch': { name: 'Watch', runner: () => watchWebpack(watch, watchOptions) }
+};
 
 program
   .command('check-configuration')
@@ -28,18 +35,16 @@ program
 
 program
   .command('standard')
-  .description('Run Webpack builds, set environment to development for HMR')
-  .argument('[environment]', 'Choose production (default) or development')
+  .description('Run Webpack builds, set environment to development for HMR, or watch for rebuilds without HMR.')
+  .argument('[environment]', 'Choose production (default), watch or development')
   .action((environment = 'production') => {
-    const isDevelopment = 'development' === environment;
+    const selectedMode = PACKAGE_MODES[environment] ?? PACKAGE_MODES['production'];
+    const { configuration, name, runner } = selectedMode;
 
     console.log(chalk.greenBright('Package:\tKanopi Pack Standard'))
-    console.log(chalk.yellow('Environment:\t' + (isDevelopment ? 'Development' : 'Production')));
+    console.log(chalk.yellow('Environment:\t' + name));
     console.log('');
-
-    isDevelopment
-      ? runDevServer(development)
-      : runWebpack(production);
+    runner(configuration);
   });
 
 program.parse(process.argv);

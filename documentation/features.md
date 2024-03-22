@@ -13,6 +13,10 @@
 
 The development side of the bundler runs as a server, and automatically reloads the changed parts of styles and supporting scripts/applications through a process called hot-module reload (HMR). The configuration offers multiple options to change the IP and Port of the development server, along with the ability to listen for proxied requests when include inside a container based solution.  
 
+## Watch Mode
+
+For systems like Drupal's asset mapping system or WordPress Full Site Editor iFrame, which may not support Development mode, you can use Watch mode. Watch mode continues to rebuild assets as source files change, without the HMR style functionality. In this mode, the developer refreshes whatever browser they are using to see the recompiled changes. Watch mode uses the polling/watchOptions specified in the Development Server configuration.
+
 ### Project Integration
 
 The Development Server solution is different than some other similar middleware based solutions, or full application frameworks which fully control the whole page and therefore included scripts and styles. Any Kanopi Pack based project needs to reference the Development and Production assets at a different set of URLs, typically a different hostname with the same directory structure, for instance `https://0.0.0.0:4400/assets/dist/*` versus `https://my.site/assets/dist/*`. [Kanopi Pack Asset Loader](https://github.com/kanopi/kanopi-pack-asset-loader) is available as a PHP based library to coordinate this and offers a full integration with WordPress. 
