@@ -11,9 +11,9 @@ const {
 } = kanopiPack;
 
 const PACKAGE_MODES = {
-  'development': { name: 'Development', runner: () => runDevServer(development) },
-  'production': { name: 'Production', runner: () => runWebpack(production) },
-  'watch': { name: 'Watch', runner: () => watchWebpack(watch, watchOptions) }
+  'development': { configuration: development, name: 'Development', runner: () => runDevServer(development) },
+  'production': { configuration: production, name: 'Production', runner: () => runWebpack(production) },
+  'watch': { configuration: watch, name: 'Watch', runner: () => watchWebpack(watch, watchOptions) }
 };
 
 program
@@ -40,12 +40,12 @@ program
   .argument('[environment]', 'Choose production (default), development, or watch')
   .action((environment = 'production') => {
     const selectedMode = PACKAGE_MODES[environment] ?? PACKAGE_MODES['production'];
-    const { configuration, name, runner } = selectedMode;
+    const { name, runner } = selectedMode;
 
     console.log(chalk.greenBright('Package:\tKanopi Pack Standard'))
     console.log(chalk.yellow('Environment:\t' + name));
     console.log('');
-    runner(configuration);
+    runner();
   });
 
 program.parse(process.argv);
