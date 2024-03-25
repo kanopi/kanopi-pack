@@ -5,7 +5,7 @@ const kanopiPack = require('../index');
 const utility = require('util');
 const {
   commands: { standard: program },
-  configuration: { development, production, watch },
+  configuration: { development, production },
   environment: { standard: { watchOptions } },
   runners: { runDevServer, runWebpack, watchWebpack }
 } = kanopiPack;
@@ -13,7 +13,7 @@ const {
 const PACKAGE_MODES = {
   'development': { configuration: development, name: 'Development', runner: () => runDevServer(development) },
   'production': { configuration: production, name: 'Production', runner: () => runWebpack(production) },
-  'watch': { configuration: watch, name: 'Watch', runner: () => watchWebpack(watch, watchOptions) }
+  'watch': { configuration: production, name: 'Watch', runner: () => watchWebpack(production, watchOptions) }
 };
 
 program

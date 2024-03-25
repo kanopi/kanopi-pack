@@ -18,7 +18,7 @@ When`@kanopi/pack` is referenced in another package (i.e. `require('@kanopi/pack
             "common": 'Common profile and plugins for all build profiles',
             "development": 'Development server profile and plugins',
             "production": 'Production build profile and plugins',
-            "watch": 'Production-like build profile and plugins',
+            "watch": 'Production build profile and plugins',
         },
         "components": {
             "loaders": {
@@ -40,6 +40,6 @@ When`@kanopi/pack` is referenced in another package (i.e. `require('@kanopi/pack
         "runners": {
             "runDevServer": 'Runs Webpack Dev Server based on the provided configuration',
             "runWebpack": 'Runs Webpack production build based on the provided configuration'
-            "watchWebpack": 'Runs Webpack production-like build based on the provided configuration and watchOptions'
+            "watchWebpack": 'Runs Webpack production build based on the provided configuration and watchOptions'
         }
     }
