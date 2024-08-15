@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import chalk from 'chalk';
+const chalk = require('chalk');
 const kanopiPack = require('../index');
 const utility = require('util');
 const {
