@@ -81,5 +81,8 @@
   },
   "bin": {
     "kanopi-pack": "./bin/kanopi-pack.js"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.0"
   }
 }
