@@ -51,6 +51,7 @@
     "glob": "~11.0.0",
     "mini-css-extract-plugin": "~2.9.0",
     "mini-svg-data-uri": "^1.4.4",
+    "patch-package": "^8.0.0",
     "pkg-dir": "~8.0.0",
     "postcss": "~8.4.41",
     "postcss-custom-media": "~11.0.0",
@@ -82,8 +83,5 @@
   },
   "bin": {
     "kanopi-pack": "./bin/kanopi-pack.js"
-  },
-  "devDependencies": {
-    "patch-package": "^8.0.0"
   }
 }
