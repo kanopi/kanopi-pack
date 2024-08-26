@@ -35,9 +35,9 @@ Since this is a wrapper for Webpack, if you are already using Webpack or similar
 
 ## How Kanopi Pack?
 
-Kanopi Pack is installed via NPM anywhere in your project structure. 
+Kanopi Pack is installed via NPM anywhere in your project structure.
 
-### Installation 
+### Installation
 
 ```
 npm i @kanopi/pack
@@ -59,20 +59,20 @@ Configuration is implemented via the Main Configuration File, with Preferred loc
 
 ### Dependency Limitations
 
-| Package                  | Version | Notes                                                                                                                  | 
+| Package                  | Version | Notes                                                                                                                  |
 |:-------------------------|:--------|:-----------------------------------------------------------------------------------------------------------------------|
 | Chalk                    | 4.x     | Chalk v5.x uses ESM which is not compatible with the rest of the Node modules used here, it is locked at v4.x for now. |
 | Commander                | 11.x    | There are some API changes which require further evaluation outside of a standard update.                              |
-| StyleLint                | 15.x    | Other Stylelint packages are restricted to 15.x maximum currently, will reevaluate in future cycles.                   | 
+| StyleLint                | 15.x    | Other Stylelint packages are restricted to 15.x maximum currently, will reevaluate in future cycles.                   |
 | StyleLint Webpack Plugin | 4.x     | StyleLint 16.x and Node 18.x support, keeping back due to StyleLint version limitations                                |
 | Webpack Dev Server       | 4.x     | Dev Server API changes with version 5.x, requires evaluation outside of a standard maintenance cycle.                  |
 
 
 ### Platform Software Requirements
 
-| Package | Minimum | Recommended | 
+| Package | Minimum | Recommended |
 |:--------|:--------|:------------|
-| Node    | 18.x    | 20.x        |
+| Node    | 22.x    | 22.x        |
 | NPM     | 9.x     | 10.x         |
 
 ### Dependent Packages
