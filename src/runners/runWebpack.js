@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+const chalk = require('chalk');
 const webpack = require('webpack');
 
 module.exports = function runWebpack(config) {
