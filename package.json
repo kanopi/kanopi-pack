@@ -1,7 +1,8 @@
 {
   "name": "@kanopi/pack",
   "description": "Pre-packaged Webpack 5 configuration with extendable configuration to coordinate loaders and rules for common web stacks",
-  "main": "index.js",
+  "exports": "./index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
